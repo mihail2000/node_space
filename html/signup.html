@@ -1,0 +1,35 @@
+{% extends 'header.html' %}
+
+{% block title %}Sign up page{% endblock %}
+
+{% block head %}
+  {% parent %}
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2">
+				<p>Username:</p>
+				<input name="username"></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<p>Email:</p>
+				<input name="email"></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<p>Password:</p>
+				<input type="password" name="pwd"></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<button>Register</button>
+			</div>
+		</div>
+	</div>
+{% endblock %}
