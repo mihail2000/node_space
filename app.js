@@ -39,12 +39,19 @@ app.post('/api/*', function (req, res) {
 			var api = require('./application/api/' + api_controller_name + '.js');			
 			api[function_name](req.body, function(data, error) { 
 				if (error === null) {
-					res.end('It worked!');
+					res.redirect('/');
+					res.end();					
+					//res.end(data);
 				} else {
-					res.end('Error occurred!');
+					res.send({error: 'Error occurred'});
+					res.end();
 				}
 			});
+		} else {
+			res.end('Unknown request');
 		}
+	} else {
+		res.end('Unknown request');		
 	}
 
 });
