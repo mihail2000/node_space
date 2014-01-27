@@ -7,29 +7,31 @@
 {% endblock %}
 
 {% block content %}
-	<div class="container">
-		<div class="row">
-			<div class="col-md-2">
-				<p>Username:</p>
-				<input name="username"></input>
+	<form action="/api/register" method="post">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<p>Username:</p>
+					<input name="username"></input>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<p>Email:</p>
+					<input name="email"></input>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<p>Password:</p>
+					<input type="password" name="pwd"></input>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<input type="submit" value="submit">Register</button>
+				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-2">
-				<p>Email:</p>
-				<input name="email"></input>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-2">
-				<p>Password:</p>
-				<input type="password" name="pwd"></input>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-2">
-				<button>Register</button>
-			</div>
-		</div>
-	</div>
+	</form>
 {% endblock %}
