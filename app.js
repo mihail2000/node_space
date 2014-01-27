@@ -1,6 +1,6 @@
 var express = require('express');
-var swig  = require('swig');
 var app = express();
+var swig  = require('swig');
 
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
@@ -26,32 +26,27 @@ app.get('/signup', function (req, res) {
 	res.render('signup', { });
 });
 
-app.post('/api/register', function (req, res) {
-	var crypto = require('crypto');
-	var MongoClient = require('mongodb').MongoClient;
+app.post('/api/*', function (req, res) {
+	// Find the API call name
+	var i = req.route.params[0].search('/');
+	
+	if (i > -1) {
+		var api_controller_name = req.route.params[0].substring(0, i);
+		// Find the function name
+		var function_name = req.route.params[0].substring(i + 1);
 
-	MongoClient.connect('mongodb://localhost/space', function(err, db) {
-		if(err) throw err;
-		
-		var collection = db.collection('users');
-		collection.find( { $or: [ { 'username' : req.body.username }, { 'email' : req.body.email } ] }).toArray(function(err, docs) {
-			if (docs.length > 0) {
-				console.log('User already exists');
-			} else {
-				var hash = crypto.createHash('md5').update(req.body.pwd).digest('hex');
-				var user = {
-					username : req.body.username,
-					email : req.body.email,
-					password : hash
-				};
+		if (function_name !== '') {
+			var api = require('./application/api/' + api_controller_name + '.js');			
+			api[function_name](req.body, function(data, error) { 
+				if (error === null) {
+					res.end('It worked!');
+				} else {
+					res.end('Error occurred!');
+				}
+			});
+		}
+	}
 
-				db.collection('users').insert(user, function(err, records) {
-					if (err) throw err;
-					console.log("Record added as "+records[0]._id);
-				});
-			}
-        });
-	})
 });
 
 app.listen(3000);
