@@ -19,20 +19,8 @@ swig.setDefaults({ cache: false });
 // Don't leave both of these to `false` in production!
 
 app.get('*', function (req, res) {
-	if (req.route.params[0] == '/') {
-		res.render('index', { });
-	} else {
-		res.render(req.route.params[0].substring(1) + '.html', { }, function(err, html)  {
-			if (err !== null) {
-				console.log(err);
-				res.send('Unknown request');
-				res.end();					
-			} else {
-				res.send(html);
-				res.end();
-			}
-		});
-	}
+	var core_controller = require(__dirname + '/application/controller/core.js');
+	core_controller.route_get(req,res);
 });
 
 
