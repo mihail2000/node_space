@@ -35,7 +35,6 @@ var GAME_ENGINE = {
 				$('#register').submit(function(e) {
 					e.preventDefault();
 				});
-
 				$('#registersubmit').click(function(e) {
 					$.post('/api/user/register', $('#register').serialize(), function(data) {
 						console.log(data.error);
@@ -43,6 +42,8 @@ var GAME_ENGINE = {
 							$('.errorMessage').slideDown(200, function() {
 								setTimeout(function() {$('.errorMessage').hide(200)}, 3000);
 							});
+						} else {
+							$('.signupContainer').replaceWith(data.tpl);
 						}
 					});
 				});

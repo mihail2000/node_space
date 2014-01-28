@@ -39,9 +39,10 @@ app.post('/api/*', function (req, res) {
 			var api = require('./application/api/' + api_controller_name + '.js');			
 			api[function_name](req.body, function(data, error) { 
 				if (error === null) {
-					res.redirect('/');
-					res.end();					
-					//res.end(data);
+					swig.renderFile('/Users/mhaapalainen/projects/space/html/signup_success.html', {}, function(err, output) {
+						res.send({ tpl: output });
+						res.end();
+					});
 				} else {
 					res.send({error: 'Error occurred'});
 					res.end();
