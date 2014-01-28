@@ -18,13 +18,23 @@ swig.setDefaults({ cache: false });
 // NOTE: You should always cache templates in a production environment.
 // Don't leave both of these to `false` in production!
 
-app.get('/', function (req, res) {
-	res.render('index', { });
+app.get('*', function (req, res) {
+	if (req.route.params[0] == '/') {
+		res.render('index', { });
+	} else {
+		res.render(req.route.params[0].substring(1) + '.html', { }, function(err, html)  {
+			if (err !== null) {
+				console.log(err);
+				res.send('Unknown request');
+				res.end();					
+			} else {
+				res.send(html);
+				res.end();
+			}
+		});
+	}
 });
 
-app.get('/signup', function (req, res) {
-	res.render('signup', { });
-});
 
 app.post('/api/*', function (req, res) {
 	// Find the API call name
