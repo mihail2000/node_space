@@ -16,10 +16,10 @@ exports.route_get = function(req, res) {
 			if (y != -1) {
 				console.log('case2');
 				console.log(req.originalUrl.substring(i + 1));
-				action_name = req.originalUrl.substring(i + 1).substring(1, y + 1);
+				action_name = 'action_' + req.originalUrl.substring(i + 1).substring(1, y + 1);
 			} else {
 				console.log('case3');
-				action_name = req.originalUrl.substring(i + 2);		
+				action_name = 'action_' + req.originalUrl.substring(i + 2);		
 			}
 		} else {
 			console.log('case4');

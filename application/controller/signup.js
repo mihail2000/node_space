@@ -14,3 +14,8 @@ exports.action_index = function(req, res) {
 		}
 	});	
 }
+
+exports.action_test = function(req, res) {
+	res.send('<div>Foo</div>');
+	res.end();
+}
