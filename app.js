@@ -37,7 +37,7 @@ app.post('/api/*', function (req, res) {
 			var api = require('./application/api/' + api_controller_name + '.js');			
 			api[function_name](req.body, function(data, error) { 
 				if (error === null) {
-					swig.renderFile(__dirname + '/application/html/signup_success.html', {}, function(err, output) {
+					swig.renderFile(__dirname + '/application/html/signup/signup_success.html', {}, function(err, output) {
 						console.log(err);
 						res.send({ tpl: output });
 						res.end();

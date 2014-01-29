@@ -1,5 +1,8 @@
 .header_panel {background-color:#b0c4de;}
-body {background-color:#000000;}
+body {
+	background-color:#000000;
+	color:#FFFFFF;
+}
 
 .errorMessage {
 	background-color:red;
