@@ -8,6 +8,7 @@ app.set('views', __dirname + '/application/html');
 
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
+
 app.use(express.bodyParser());
 
 // Swig will cache templates for you, but you can disable
@@ -18,11 +19,10 @@ swig.setDefaults({ cache: false });
 // NOTE: You should always cache templates in a production environment.
 // Don't leave both of these to `false` in production!
 
-app.get('*', function (req, res) {
+app.get('/|/signin|/signup', function (req, res) {
 	var core_controller = require(__dirname + '/application/controller/core.js');
-	core_controller.route_get(req,res);
+	core_controller.route_get(req, res);
 });
-
 
 app.post('/api/*', function (req, res) {
 	// Find the API call name
