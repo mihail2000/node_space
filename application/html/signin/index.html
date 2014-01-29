@@ -1,0 +1,31 @@
+{% extends '../header.html' %}
+
+{% block title %}Sign up page{% endblock %}
+
+{% block head %}
+  {% parent %}
+{% endblock %}
+
+{% block content %}
+<form action="/api/user/login" method="post" id="register">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2">
+				<p>Username or email:</p>
+				<input name="username"></input>
+			</div>
+		<div class="row">
+			<div class="col-md-2">
+				<p>Password:</p>
+				<input type="password" name="pwd"></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2">
+				<input id="registersubmit" type="submit" value="submit">Login</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+{% endblock %}
