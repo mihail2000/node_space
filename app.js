@@ -3,13 +3,11 @@ var app = express();
 var swig  = require('swig');
 
 app.engine('html', swig.renderFile);
+app.use(express.bodyParser());
+
 app.set('view engine', 'html');
 app.set('views', __dirname + '/application/html');
-
-app.use('/js', express.static('js'));
-app.use('/css', express.static('css'));
-
-app.use(express.bodyParser());
+app.use('/public', express.static(__dirname + '/public'));
 
 // Swig will cache templates for you, but you can disable
 // that and use Express's caching instead, if you like:
@@ -20,6 +18,7 @@ swig.setDefaults({ cache: false });
 // Don't leave both of these to `false` in production!
 
 app.get('/|/signin|/signup', function (req, res) {
+	//console.log(req);
 	var core_controller = require(__dirname + '/application/controller/core.js');
 	core_controller.route_get(req, res);
 });

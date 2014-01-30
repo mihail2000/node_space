@@ -42,9 +42,11 @@ exports.route_get = function(req, res) {
 				controller[action_name](req, res);
 			} else {
 				console.log('CORE::Unknown action ' + controller_name + ':' + action_name);
+				res.end();
 			}
 		} else {
 			console.log('CORE::Unknown controller: ' + controller_name);
+			res.end();
 		}
 	}
 }
