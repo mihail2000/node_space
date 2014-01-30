@@ -1,10 +1,16 @@
+/**
+ * Module dependencies.
+ */
 var express = require('express');
 var app = express();
 var swig  = require('swig');
+var MatuFW = {};
+/**
+ * Initializing all necessary objects
+ */
 
 app.engine('html', swig.renderFile);
 app.use(express.bodyParser());
-
 app.set('view engine', 'html');
 app.set('views', __dirname + '/application/html');
 app.use('/public', express.static(__dirname + '/public'));
@@ -17,8 +23,24 @@ swig.setDefaults({ cache: false });
 // NOTE: You should always cache templates in a production environment.
 // Don't leave both of these to `false` in production!
 
-app.get('/|/signin|/signup', function (req, res) {
-	//console.log(req);
+/**
+ * Initialize routes based on available controllers
+ * TODO: This is not very scalable solution
+ */
+/*MatuFW.initializeRoutes = function() {
+	var fs = require('fs');
+	fs.readdir(__dirname + '/application/controller', function(err, files) {
+		var routes = '/';
+
+		for (var i = 0; i < files.length; i++) {
+			routes += '|' + files;
+		}
+		console.log(routes);
+	});
+}
+
+*/
+app.get('*', function (req, res) {
 	var core_controller = require(__dirname + '/application/controller/core.js');
 	core_controller.route_get(req, res);
 });
