@@ -1,5 +1,12 @@
 // Core controller
 
+addConfig = function(obj) {
+	config = {
+		path: '/../html/'
+	};
+	obj.config = config;
+}
+
 exports.route_get = function(req, res) {
 	if (req.originalUrl == '/') {
 		res.render('index', { });
@@ -31,6 +38,7 @@ exports.route_get = function(req, res) {
 
 		if (typeof controller !== 'undefined') {
 			if (typeof controller[action_name] !== 'undefined') {
+				addConfig(controller);
 				controller[action_name](req, res);
 			} else {
 				console.log('CORE::Unknown action ' + controller_name + ':' + action_name);
