@@ -11,6 +11,8 @@ exports.register = function(userData, callback) {
 	MongoClient.connect('mongodb://localhost/space', function(err, db) {
 		if(err) throw err;
 		
+		var userModel = require(__dirname + '/../model/matufw_base_model.js');
+
 		var collection = db.collection('users');
 		collection.find( { $or: [ { 'username' : userData.username }, { 'email' : userData.email } ] }).toArray(function(err, docs) {
 			if (docs.length > 0) {
