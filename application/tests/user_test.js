@@ -35,5 +35,27 @@ module.exports = testCase({
         
         test.done();
     },
+    "Find one user object": function(test) {
+
+        test.expect(2);
+        var userModel = require(__dirname + '/../model/user.js');
+
+        var userData = {
+            'username' : 'Mike', 
+            'email' : 'mike@mail.com',
+            'password' : 'salasana'
+        };
+
+        userData.password = userModel.encodePassword(userData.password);
+    
+        userModel.create(userData, function(id) {
+            test.ok(id !== null);
+            userModel.fetchById(id, function(err, doc) {
+                test.ok(doc !== null);
+                test.done();
+            });
+        });
+
+    },
 
 });

@@ -8,7 +8,12 @@ function _userModel() {
 };
 
 _userModel.collectionName = 'users';
-_userModel.primaryId = 'id';
+_userModel.primaryId = '_id';
+
+
+_userModel.post_cache_data = function() {
+	console.log('post_cache_data');
+}
 
 _userModel.encodePassword = function(password) {
 	var crypto = require('crypto');
