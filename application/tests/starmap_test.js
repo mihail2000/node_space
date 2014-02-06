@@ -5,7 +5,7 @@ module.exports = testCase({
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
 
-        starmapModel.randomizeStarmap(100);
+        starmapModel.randomizeStarmap(300);
 
         test.done();
     }

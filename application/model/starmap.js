@@ -6,6 +6,31 @@ var baseModel = require(__dirname + '/matufw_base_model.js');
 
 function _starmapModel() {};
 
+// Private parts
+
+__StarmapNameHelper = function(iteration) {
+
+	var ret = '';
+
+	if (iteration > 1) {
+		var num = iteration;
+
+		if (!+num)
+		    return false;
+		var digits = String(+num).split(""),
+			key = ["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM",
+				"","X","XX","XXX","XL","L","LX","LXX","LXXX","XC",
+				"","I","II","III","IV","V","VI","VII","VIII","IX"],
+			roman = "",
+			i = 3;
+		while (i--)
+			roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+		ret = ' ' + Array(+digits.join("") + 1).join("M") + roman;
+
+	}
+	return ret;
+}
+
 _starmapModel.starmapWidth = 10000;
 _starmapModel.starmapHeight = 10000;
 _starmapModel.starmap = [];
@@ -20,15 +45,26 @@ _starmapModel.randomizeStarmap = function(countOfStars) {
 	var fs = require('fs');
 	fs.readFile(__dirname + '/../resources/planetnames', 'utf8', function (err, data) {
   		if (err) throw err;
-  		var planetNames = data.match(/[^\s]+/g);
-  		//console.log(planetNames[199]);
+  		var planetNames = [];
+  		var nameIteration = 0;
+
 		for (var i = 0; i < countOfStars; i++) {
+			// If we have exchausted all planet names, re-use the old ones with II, III, IV etc.
+			if (planetNames.length == 0) {
+ 				planetNames = data.match(/[^\s]+/g);
+ 				nameIteration++;
+			}
+
+			var nameIdx = Math.floor(Math.random() * planetNames.length);
+
 			var star = {
 				x: Math.floor((Math.random() * _starmapModel.starmapWidth)+1),
 				y: Math.floor((Math.random() * _starmapModel.starmapHeight)+1),
-				name: planetNames[Math.floor(Math.random() * planetNames.length)]
+				name: planetNames[nameIdx] + __StarmapNameHelper(nameIteration)
 			}
+			planetNames.splice(nameIdx, 1);
 			_starmapModel.starmap.push(star);
+
 		}
 
 		console.log(_starmapModel.starmap);
