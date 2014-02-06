@@ -36,10 +36,8 @@ module.exports = testCase({
         test.done();
     },
     "Find one user object": function(test) {
-
         test.expect(2);
         var userModel = require(__dirname + '/../model/user.js');
-
         var userData = {
             'username' : 'Mike', 
             'email' : 'mike@mail.com',
