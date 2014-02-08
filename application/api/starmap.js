@@ -2,7 +2,7 @@
 //var crypto = require('crypto');
 var MongoClient = require('mongodb').MongoClient;
 
-exports.loadstarmap = function(callback) {
+exports.loadstarmap = function(data, callback) {
 
 	//var required_params = ['username', 'email', 'pwd'];
 	//var controllerUtils = require('../utils/controllerutil.js');
@@ -12,10 +12,10 @@ exports.loadstarmap = function(callback) {
 		if(err) throw err;
 		
 		var starmapModel = require(__dirname + '/../model/starmap.js');
-        //starmapModel.loadStarmap(function() {
-        //	callback(starmapModel.starmap);
-        //});
-		callback('foo');
+        starmapModel.loadStarmap(function() {
+			callback({ output: starmapModel.starmap }, null)
+        });
+
 
 	});
 }

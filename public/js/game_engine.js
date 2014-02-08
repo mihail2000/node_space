@@ -17,19 +17,27 @@ var GAME_ENGINE = {
 	},
 	modules: {
 		starmap: {
+			self: null,
+			starmapData: null,
+			zoom: 0.1,
 			selector: '.initStarmap',
 			init: function() {
+				self = GAME_ENGINE.modules.starmap;
+				$.post( '/api/starmap/loadstarmap', function(data) {
+					self.starmapData = data.data;
+					self.draw();
+				});
+			},
+			draw: function() {
 				var canvas=document.getElementById('mainarea');
 				var ctx=canvas.getContext('2d');
-				//ctx.fillStyle='#FFFFFF';
-				$.post( '/api/starmap/loadstarmap', function(data) {
-					console.log(data);
-				});
-				for (var i = 0; i < 200; i++) {
-					//var x = Math.floor((Math.random()*1024)+1);
-					//var y = Math.floor((Math.random()*800)+1);
-					//ctx.fillRect(x,y,2,2);			
+				ctx.fillStyle='#FFFFFF';
+				for (var i = 0; i < self.starmapData.length; i++) {
+					var x = self.starmapData[i].x * self.zoom;
+					var y = self.starmapData[i].y * self.zoom;
+					ctx.fillRect(x,y,2,2);			
 				}
+
 			}
 		},
 		register: {
