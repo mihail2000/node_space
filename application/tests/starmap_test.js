@@ -1,7 +1,7 @@
 var testCase  = require('nodeunit').testCase;
 
 module.exports = testCase({
-    "Randomize starmap": function(test) {
+   "Randomize starmap": function(test) {
     	test.expect(2);
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
@@ -12,9 +12,9 @@ module.exports = testCase({
         });
     },
     "Save starmap": function(test) {
-    	test.expect(1);
+    	test.expect(2);
         var starmapModel = require(__dirname + '/../model/starmap.js');
-        //test.ok(typeof starmapModel !== 'undefined');
+        test.ok(typeof starmapModel !== 'undefined');
 
         starmapModel.randomizeStarmap(300, function() {
 			starmapModel.saveStarmap();
@@ -23,6 +23,17 @@ module.exports = testCase({
         });
 
         //test.done();
+    },
+    "Read starmap": function(test) {
+        test.expect(2);
+        var starmapModel = require(__dirname + '/../model/starmap.js');
+        test.ok(typeof starmapModel !== 'undefined');
+
+        starmapModel.loadStarmap(function() {
+            test.ok(starmapModel.starmap.length == 300)
+            test.done();
+        });
     }
+
 
 });

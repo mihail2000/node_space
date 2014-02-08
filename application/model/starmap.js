@@ -81,6 +81,13 @@ _starmapModel.saveStarmap = function(callback) {
 	_starmapModel.create(_starmapModel.starmap);
 }
 
+_starmapModel.loadStarmap = function(callback) {
+	_starmapModel.fetch('', function(err, doc) {
+		_starmapModel.starmap = doc;
+		callback();
+    });
+}
+
 _starmapModel.collectionName = 'starmaps';
 _starmapModel.primaryId = '_id';
 

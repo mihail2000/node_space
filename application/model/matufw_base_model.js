@@ -40,7 +40,22 @@ function baseModel(child) {
 			collection.findOne( { '_id' : oID }, function(err, doc) {
 				if(err) throw err;				
 				var obj = child.createObject(doc);
+				db.close();
 				callback(err, obj);
+			});
+
+		});
+	}
+
+	child.fetch = function(query, callback) {
+		connectToDb(function(err, db, collection){
+			if(err) throw err;
+			var name = child.primaryId;
+			var collection = db.collection(child.collectionName);
+			collection.find().toArray(function(err, doc) {
+				if(err) throw err;				
+				db.close();
+				callback(err, doc);
 			});
 
 		});
