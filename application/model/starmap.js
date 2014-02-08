@@ -31,6 +31,9 @@ __StarmapNameHelper = function(iteration) {
 	return ret;
 }
 
+/**
+	Properties
+*/
 _starmapModel.starmapWidth = 10000;
 _starmapModel.starmapHeight = 10000;
 _starmapModel.starmap = [];
@@ -39,7 +42,7 @@ _starmapModel.starmap = [];
 
 	Creates a randomized starmap and stores it into the internal _starmap structure
 */
-_starmapModel.randomizeStarmap = function(countOfStars) {
+_starmapModel.randomizeStarmap = function(countOfStars, callback) {
 
 	// Read contents of the starmap names file
 	var fs = require('fs');
@@ -47,6 +50,7 @@ _starmapModel.randomizeStarmap = function(countOfStars) {
   		if (err) throw err;
   		var planetNames = [];
   		var nameIteration = 0;
+  		var starmap = [];
 
 		for (var i = 0; i < countOfStars; i++) {
 			// If we have exchausted all planet names, re-use the old ones with II, III, IV etc.
@@ -63,15 +67,12 @@ _starmapModel.randomizeStarmap = function(countOfStars) {
 				name: planetNames[nameIdx] + __StarmapNameHelper(nameIteration)
 			}
 			planetNames.splice(nameIdx, 1);
-			_starmapModel.starmap.push(star);
+			starmap.push(star);
 
 		}
-
-		console.log(_starmapModel.starmap);
-
+		_starmapModel.starmap = starmap;
+		callback();
 	});
-
-
 }
 
 _starmapModel.collectionName = 'starmaps';
