@@ -29,7 +29,7 @@ exports.register = function(userData, callback) {
 				db.collection('users').insert(user, function(err, records) {
 					if (err) throw err;
 					console.log("Record added as "+records[0]._id);
-					callback('Record added as ' + records[0]._id, null)
+					callback({ template: '/application/html/signup/signup_success.html' }, null)
 				});
 			}
 		});
