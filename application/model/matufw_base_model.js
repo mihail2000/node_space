@@ -54,6 +54,7 @@ function baseModel(child) {
 				if (typeof callback !== 'undefined') {
 					callback(records[0]._id);					
 				}
+				db.close();
 			});
 		});
 	}

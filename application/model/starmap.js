@@ -34,6 +34,7 @@ __StarmapNameHelper = function(iteration) {
 /**
 	Properties
 */
+_starmapModel._super = null;
 _starmapModel.starmapWidth = 10000;
 _starmapModel.starmapHeight = 10000;
 _starmapModel.starmap = [];
@@ -73,6 +74,11 @@ _starmapModel.randomizeStarmap = function(countOfStars, callback) {
 		_starmapModel.starmap = starmap;
 		callback();
 	});
+}
+
+_starmapModel.saveStarmap = function(callback) {
+	var i = 0;
+	_starmapModel.create(_starmapModel.starmap);
 }
 
 _starmapModel.collectionName = 'starmaps';
