@@ -20,21 +20,50 @@ var GAME_ENGINE = {
 			self: null,
 			starmapData: null,
 			zoom: 0.05,
+			x_scroll: 0,
+			y_scroll: 0,
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
-				$.post( '/api/starmap/loadstarmap', { id: '52f844a13a26b9160c82a6c1' }, function(res) {
+				$.post( '/api/starmap/loadstarmap', { id: '52f85b2829c9de5c0d61b9df' }, function(res) {
 					self.starmapData = res.data;
 					self.draw();
 				});
 
 				$('#map_zoomin').click(function() {
-					self.zoom += 0.005;
+					//self.zoom += 0.005;
+					self.zoom *= 1.1;
+					self.x_scroll -= 25;
+					self.y_scroll -= 25;
 					self.draw();
 				});
 
 				$('#map_zoomout').click(function() {
-					self.zoom -= 0.005;
+					//self.zoom -= 0.005;
+					self.zoom /= 1.1;
+					self.x_scroll += 25;
+					self.y_scroll += 25;
+					self.draw();
+				});
+
+				$('.map_move').click(function(e) {
+					switch ($(e.target).attr('id')) {
+						case 'up':
+							self.y_scroll+=10;
+						break;
+
+						case 'down':
+							self.y_scroll-=10;
+						break;
+
+						case 'left':
+							self.x_scroll+=10;
+						break;
+
+						case 'right':
+							self.x_scroll-=10;
+						break;
+					}
 					self.draw();
 				});
 
@@ -42,12 +71,26 @@ var GAME_ENGINE = {
 			draw: function() {
 				var canvas=document.getElementById('mainarea');
 				var ctx=canvas.getContext('2d');
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.fillStyle='#FFFFFF';
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				for (var i = 0; i < self.starmapData.length; i++) {
-					var x = self.starmapData[i].x * self.zoom;
-					var y = self.starmapData[i].y * self.zoom;
-					ctx.fillRect(x,y,2,2);			
+					var x = self.starmapData[i].x * self.zoom + self.x_scroll;
+					var y = self.starmapData[i].y * self.zoom + self.y_scroll;
+			      	var radius = 1;
+
+					ctx.beginPath();
+					ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+					ctx.fillStyle = self.starmapData[i].color;
+					ctx.fill();
+					ctx.lineWidth = 0;
+					ctx.strokeStyle = self.starmapData[i].color;
+					ctx.stroke();
+
+					ctx.fillStyle = "white";
+					ctx.font = "12px Verdana";
+					ctx.fillText(self.starmapData[i].name, x + 5, y + 3);
+
+					//ctx.fillRect(x,y,2,2);			
 				}
 
 			}

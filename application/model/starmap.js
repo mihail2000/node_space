@@ -9,7 +9,6 @@ function _starmapModel() {};
 // Private parts
 
 __StarmapNameHelper = function(iteration) {
-
 	var ret = '';
 
 	if (iteration > 1) {
@@ -29,6 +28,19 @@ __StarmapNameHelper = function(iteration) {
 
 	}
 	return ret;
+}
+
+__StarColorRandomizer = function(iteration) {
+	var starColors = [
+		'red',
+		'orange',
+		'yellow',
+		'white',
+		'blue',
+		'cyan'
+	];
+
+	return starColors[Math.floor((Math.random() * 6))];
 }
 
 /**
@@ -68,7 +80,8 @@ _starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
 			var star = {
 				x: Math.floor((Math.random() * _starmapModel.starmapWidth)+1),
 				y: Math.floor((Math.random() * _starmapModel.starmapHeight)+1),
-				name: planetNames[nameIdx] + __StarmapNameHelper(nameIteration)
+				name: planetNames[nameIdx] + __StarmapNameHelper(nameIteration),
+				color: __StarColorRandomizer()
 			}
 			planetNames.splice(nameIdx, 1);
 			starmap.push(star);
