@@ -38,7 +38,7 @@ _starmapModel._super = null;
 _starmapModel.starmapWidth = 10000;
 _starmapModel.starmapHeight = 10000;
 _starmapModel.starmap = { gameid : null,
-  						map : [] };
+  						planets : [] };
 
 /**
 	randomizeStarmap
@@ -74,7 +74,7 @@ _starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
 			starmap.push(star);
 
 		}
-		_starmapModel.starmap.map = starmap;
+		_starmapModel.starmap.planets = starmap;
 		callback();
 	});
 }
@@ -84,8 +84,8 @@ _starmapModel.saveStarmap = function(callback) {
 	_starmapModel.create(_starmapModel.starmap);
 }
 
-_starmapModel.loadStarmap = function(callback) {
-	_starmapModel.fetch('', function(err, doc) {
+_starmapModel.loadStarmap = function(gameID, callback) {
+	_starmapModel.fetchById(gameID, function(err, doc) {
 		_starmapModel.starmap = doc;
 		callback();
     });

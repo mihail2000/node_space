@@ -23,8 +23,9 @@ var GAME_ENGINE = {
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
-				$.post( '/api/starmap/loadstarmap', function(data) {
-					self.starmapData = data.data;
+				$.post( '/api/starmap/loadstarmap', { id: '52f844a13a26b9160c82a6c1' }, function(res) {
+					self.starmapData = res.data;
+					console.log(res.data);
 					self.draw();
 				});
 			},

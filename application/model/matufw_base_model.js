@@ -36,7 +36,7 @@ function baseModel(child) {
 			var name = child.primaryId;
 			var collection = db.collection(child.collectionName);
 			var BSON = require('mongodb').BSONPure;
-			var oID = new BSON.ObjectID('52f07da3d85b1ad15d2ede7f');
+			var oID = new BSON.ObjectID(primaryId);
 			collection.findOne( { '_id' : oID }, function(err, doc) {
 				if(err) throw err;				
 				var obj = child.createObject(doc);

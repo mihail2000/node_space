@@ -4,7 +4,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 exports.loadstarmap = function(data, callback) {
 
-	//var required_params = ['username', 'email', 'pwd'];
+	var required_params = ['id'];
 	//var controllerUtils = require('../utils/controllerutil.js');
 	//controllerUtils.checkParams(required_params, )
 
@@ -12,8 +12,8 @@ exports.loadstarmap = function(data, callback) {
 		if(err) throw err;
 		
 		var starmapModel = require(__dirname + '/../model/starmap.js');
-        starmapModel.loadStarmap(function() {
-			callback({ output: starmapModel.starmap }, null)
+        starmapModel.loadStarmap(data.id, function() {
+			callback({ output: starmapModel.starmap.planets }, null)
         });
 
 
