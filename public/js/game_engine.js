@@ -25,13 +25,24 @@ var GAME_ENGINE = {
 				self = GAME_ENGINE.modules.starmap;
 				$.post( '/api/starmap/loadstarmap', { id: '52f844a13a26b9160c82a6c1' }, function(res) {
 					self.starmapData = res.data;
-					console.log(res.data);
 					self.draw();
 				});
+
+				$('#map_zoomin').click(function() {
+					self.zoom += 0.005;
+					self.draw();
+				});
+
+				$('#map_zoomout').click(function() {
+					self.zoom -= 0.005;
+					self.draw();
+				});
+
 			},
 			draw: function() {
 				var canvas=document.getElementById('mainarea');
 				var ctx=canvas.getContext('2d');
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.fillStyle='#FFFFFF';
 				for (var i = 0; i < self.starmapData.length; i++) {
 					var x = self.starmapData[i].x * self.zoom;
