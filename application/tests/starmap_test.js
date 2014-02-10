@@ -6,34 +6,39 @@ module.exports = testCase({
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
 
-        starmapModel.randomizeStarmap(300, function() {
-			test.ok(starmapModel.starmap.length == 300);
+        starmapModel.randomizeStarmap(0, 1000, function() {
+			test.ok(starmapModel.starmap.map.length == 1000);
 	        test.done();
         });
     },
     "Save starmap": function(test) {
-    	test.expect(2);
+    	test.expect(4);
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
 
-        starmapModel.randomizeStarmap(300, function() {
-			starmapModel.saveStarmap();
-			test.ok(starmapModel.starmap.length == 300);
-	        test.done();
-        });
+        var gameModel = require(__dirname + '/../model/game.js');
+        test.ok(typeof gameModel !== 'undefined');
 
+        gameModel.setupNewGame(function(id) {
+            test.ok(id !== null);
+            console.log('Game ID : ' + id);
+
+            starmapModel.randomizeStarmap(id, 1000, function() {
+                starmapModel.saveStarmap();
+                test.ok(starmapModel.starmap.map.length == 1000);
+                test.done();
+            });
+        });
         //test.done();
     },
     "Read starmap": function(test) {
-        test.expect(2);
+        test.expect(1);
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
 
         starmapModel.loadStarmap(function() {
-            test.ok(starmapModel.starmap.length == 300)
+            //test.ok(starmapModel.starmap.map.length == 1000)
             test.done();
         });
     }
-
-
 });

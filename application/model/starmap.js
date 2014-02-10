@@ -37,13 +37,15 @@ __StarmapNameHelper = function(iteration) {
 _starmapModel._super = null;
 _starmapModel.starmapWidth = 10000;
 _starmapModel.starmapHeight = 10000;
-_starmapModel.starmap = [];
+_starmapModel.starmap = { gameid : null,
+  						map : [] };
+
 /**
 	randomizeStarmap
 
 	Creates a randomized starmap and stores it into the internal _starmap structure
 */
-_starmapModel.randomizeStarmap = function(countOfStars, callback) {
+_starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
 
 	// Read contents of the starmap names file
 	var fs = require('fs');
@@ -52,6 +54,7 @@ _starmapModel.randomizeStarmap = function(countOfStars, callback) {
   		var planetNames = [];
   		var nameIteration = 0;
   		var starmap = [];
+  		_starmapModel.starmap.gameid = gameID;
 
 		for (var i = 0; i < countOfStars; i++) {
 			// If we have exchausted all planet names, re-use the old ones with II, III, IV etc.
@@ -71,7 +74,7 @@ _starmapModel.randomizeStarmap = function(countOfStars, callback) {
 			starmap.push(star);
 
 		}
-		_starmapModel.starmap = starmap;
+		_starmapModel.starmap.map = starmap;
 		callback();
 	});
 }

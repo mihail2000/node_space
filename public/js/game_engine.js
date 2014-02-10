@@ -19,7 +19,7 @@ var GAME_ENGINE = {
 		starmap: {
 			self: null,
 			starmapData: null,
-			zoom: 0.1,
+			zoom: 0.05,
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
