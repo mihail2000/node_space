@@ -19,9 +19,10 @@ var GAME_ENGINE = {
 		starmap: {
 			self: null,
 			starmapData: null,
-			zoom: 0.05,
-			x_scroll: 0,
-			y_scroll: 0,
+			zoom: 1,
+			visible_area: { x: 0, y: 0 },
+			x_scroll: 50,
+			y_scroll: 50,
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
@@ -33,8 +34,9 @@ var GAME_ENGINE = {
 				$('#map_zoomin').click(function() {
 					//self.zoom += 0.005;
 					self.zoom *= 1.1;
-					self.x_scroll -= 25;
-					self.y_scroll -= 25;
+					self.x_scroll *= self.zoom;
+					self.y_scroll *= self.zoom;
+					console.log(self);
 					self.draw();
 				});
 
@@ -43,6 +45,7 @@ var GAME_ENGINE = {
 					self.zoom /= 1.1;
 					self.x_scroll += 25;
 					self.y_scroll += 25;
+					console.log(self);
 					self.draw();
 				});
 
@@ -87,7 +90,7 @@ var GAME_ENGINE = {
 					ctx.stroke();
 
 					ctx.fillStyle = "white";
-					ctx.font = "12px Verdana";
+					ctx.font = "10px Verdana";
 					ctx.fillText(self.starmapData[i].name, x + 5, y + 3);
 
 					//ctx.fillRect(x,y,2,2);			
