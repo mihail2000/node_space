@@ -21,6 +21,8 @@ var GAME_ENGINE = {
 			starmapData: null,
 			zoom: 0,
 			visible_area: { x: 0, y: 0, width: 1000, height: 500 },
+			target_area: { x: 0, y: 0, width: 1000, height: 500 },
+			timer_id: null,
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
@@ -31,14 +33,13 @@ var GAME_ENGINE = {
 
 				$('#map_zoomin').click(function() {
 
-					var oldwidth = self.visible_area.width;
-					var oldheight = self.visible_area.height;
-					self.visible_area.width -= 100;
-					self.visible_area.height -= 100;
-					self.visible_area.x += 50;
-					self.visible_area.y += 50;
-					console.log(self.visible_area);
-					self.draw();
+					if (self.visible_area.width > 100 && self.visible_area.height > 100) {
+						self.visible_area.width -= 100;
+						self.visible_area.height -= 100;
+						self.visible_area.x += 50;
+						self.visible_area.y += 50;
+						self.draw();
+					}
 				});
 
 				$('#map_zoomout').click(function() {
@@ -46,29 +47,49 @@ var GAME_ENGINE = {
 					self.visible_area.height += 100;
 					self.visible_area.x -= 50;
 					self.visible_area.y -= 50;
-					console.log(self.visible_area);
 					self.draw();
 				});
 
 				$('.map_move').click(function(e) {
+					if (self.timer_id !== null) {
+						clearInterval(self.timer_id);
+						self.timer_id = null;
+					}
+
 					switch ($(e.target).attr('id')) {
 						case 'up':
-							self.visible_area.y -= 50;
+							self.target_area.y = self.visible_area.y - 50;
 						break;
 
 						case 'down':
-							self.visible_area.y += 50;
+							self.target_area.y = self.visible_area.y + 50;
 						break;
 
 						case 'left':
-							self.visible_area.x -= 50;
+							self.target_area.x = self.visible_area.x - 50;
 						break;
 
 						case 'right':
-							self.visible_area.x += 50;
+							self.target_area.x = self.visible_area.x + 50;
 						break;
 					}
-					self.draw();
+
+					self.timer_id = setInterval(function() {
+						if (self.visible_area.x < self.target_area.x) {
+							self.visible_area.x+=5;
+						} else if (self.visible_area.x > self.target_area.x) {
+							self.visible_area.x-=5;
+						} else if (self.visible_area.y < self.target_area.y) {
+							self.visible_area.y+=5;
+						} else if (self.visible_area.y > self.target_area.y) {
+							self.visible_area.y-=5;
+						} else {
+							clearInterval(self.timer_id);
+							self.timer_id = null;
+						}
+
+						self.draw();
+					}, 10);
 				});
 
 			},
@@ -78,17 +99,6 @@ var GAME_ENGINE = {
 				ctx.fillStyle='#FFFFFF';
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				for (var i = 0; i < self.starmapData.length; i++) {
-					//if (self.starmapData[i].x >= self.visible_area.x && self.starmapData[i].x <= self.visible_area.width) {
-						//console.log(self.starmapData[i].x);
-					//}
-
-					//if (self.starmapData[i].name == 'Etf III') {
-					// 561	console.log(i);
-					//}
-
-					//var x = (self.starmapData[i].x + self.visible_area.x) * (canvas.width / self.visible_area.width);
-					//var y = (self.starmapData[i].y + self.visible_area.y) * (canvas.height /self.visible_area.height);
-					//console.log(canvas.width / self.visible_area.width);
 					var x = (self.starmapData[i].x - self.visible_area.x) * (canvas.width / self.visible_area.width);
 					var y = (self.starmapData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
 
