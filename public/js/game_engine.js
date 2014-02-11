@@ -32,22 +32,30 @@ var GAME_ENGINE = {
 				});
 
 				$('#map_zoomin').click(function() {
+					if (self.timer_id !== null) {
+						clearInterval(self.timer_id);
+						self.timer_id = null;
+					}
 
 					if (self.visible_area.width > 100 && self.visible_area.height > 100) {
-						self.visible_area.width -= 100;
-						self.visible_area.height -= 100;
-						self.visible_area.x += 50;
-						self.visible_area.y += 50;
-						self.draw();
+						self.target_area.width = self.visible_area.width - 100;
+						self.target_area.height = self.visible_area.height - 100;
+						self.target_area.x = self.visible_area.x + 50;
+						self.target_area.y = self.visible_area.y + 50;
+						self.animate();
 					}
 				});
 
 				$('#map_zoomout').click(function() {
-					self.visible_area.width += 100;
-					self.visible_area.height += 100;
-					self.visible_area.x -= 50;
-					self.visible_area.y -= 50;
-					self.draw();
+					if (self.timer_id !== null) {
+						clearInterval(self.timer_id);
+						self.timer_id = null;
+					}
+					self.target_area.width = self.visible_area.width + 100;
+					self.target_area.height = self.visible_area.height + 100;
+					self.target_area.x = self.visible_area.x - 50;
+					self.target_area.y = self.visible_area.y - 50;
+					self.animate();
 				});
 
 				$('.map_move').click(function(e) {
@@ -74,24 +82,61 @@ var GAME_ENGINE = {
 						break;
 					}
 
-					self.timer_id = setInterval(function() {
-						if (self.visible_area.x < self.target_area.x) {
-							self.visible_area.x+=5;
-						} else if (self.visible_area.x > self.target_area.x) {
-							self.visible_area.x-=5;
-						} else if (self.visible_area.y < self.target_area.y) {
-							self.visible_area.y+=5;
-						} else if (self.visible_area.y > self.target_area.y) {
-							self.visible_area.y-=5;
-						} else {
-							clearInterval(self.timer_id);
-							self.timer_id = null;
-						}
+					self.animate();
 
-						self.draw();
-					}, 10);
 				});
 
+			},
+			animate: function() {
+				self.timer_id = setInterval(function() {
+					var stopTimer = true;
+					if (self.visible_area.x < self.target_area.x) {
+						self.visible_area.x+=5;
+						stopTimer = false;
+					} 
+
+					if (self.visible_area.x > self.target_area.x) {
+						self.visible_area.x-=5;
+						stopTimer = false;
+					}  
+
+					if (self.visible_area.y < self.target_area.y) {
+						self.visible_area.y+=5;
+						stopTimer = false;
+					} 
+
+					if (self.visible_area.y > self.target_area.y) {
+						self.visible_area.y-=5;
+						stopTimer = false;
+					}
+
+					if (self.visible_area.width < self.target_area.width) {
+						self.visible_area.width += 10;
+						stopTimer = false;
+					}
+
+					if (self.visible_area.width > self.target_area.width) {
+						self.visible_area.width -= 10;
+						stopTimer = false;
+					}
+
+					if (self.visible_area.height < self.target_area.height) {
+						self.visible_area.height += 10;
+						stopTimer = false;
+					}
+
+					if (self.visible_area.height > self.target_area.height) {
+						self.visible_area.height -= 10;
+						stopTimer = false;
+					}
+
+					if (stopTimer) {
+						clearInterval(self.timer_id);
+						self.timer_id = null;
+					}
+
+					self.draw();
+				}, 10);
 			},
 			draw: function() {
 				var canvas=document.getElementById('mainarea');
