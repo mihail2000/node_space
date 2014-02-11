@@ -47,8 +47,8 @@ __StarColorRandomizer = function(iteration) {
 	Properties
 */
 _starmapModel._super = null;
-_starmapModel.starmapWidth = 10000;
-_starmapModel.starmapHeight = 10000;
+_starmapModel.starmapWidth = 3000;
+_starmapModel.starmapHeight = 3000;
 _starmapModel.starmap = { gameid : null,
   						planets : [] };
 
