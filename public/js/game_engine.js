@@ -31,6 +31,21 @@ var GAME_ENGINE = {
 					self.draw();
 				});
 
+				$('#mainarea').click(function(e) {
+					var x = Math.floor((e.pageX-$("#mainarea").offset().left));
+					var y = Math.floor((e.pageY-$("#mainarea").offset().top));
+					var canvas=document.getElementById('mainarea');
+
+					for (var i = 0; i < self.starmapData.length; i++) {
+						var sx = (self.starmapData[i].x - self.visible_area.x) * (canvas.width / self.visible_area.width);
+						var sy = (self.starmapData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
+
+						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
+							// TODO: Do some magic, like display planet information
+						}
+					}
+				});
+
 				$('#map_zoomin').click(function() {
 					if (self.timer_id !== null) {
 						clearInterval(self.timer_id);
