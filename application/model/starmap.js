@@ -97,6 +97,16 @@ _starmapModel.saveStarmap = function(callback) {
 	_starmapModel.create(_starmapModel.starmap);
 }
 
+/*
+_starmapModel.loadStar = function(gameID, starID, callback) {
+	var BSON = require('mongodb').BSONPure;
+	var oID = new BSON.ObjectID(gameID);
+	var query = { '$and:' [ {'_id' : oID}, { 'name:' : starID }  ] };
+	_starmapModel.fetch(query, function(err, doc) {
+		callback(doc);
+	});
+}*/
+
 _starmapModel.loadStarmap = function(gameID, callback) {
 	_starmapModel.fetchById(gameID, function(err, doc) {
 		_starmapModel.starmap = doc;

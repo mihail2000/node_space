@@ -40,6 +40,8 @@ exports.route_get = function(req, res) {
 			if (typeof controller[action_name] !== 'undefined') {
 				addConfig(controller);
 				controller[action_name](req, res);
+			} else if (typeof controller['custom_route'] !== 'undefined') {
+				controller.custom_route(req, res);
 			} else {
 				console.log('CORE::Unknown action ' + controller_name + ':' + action_name);
 				res.end();

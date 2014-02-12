@@ -42,6 +42,7 @@ var GAME_ENGINE = {
 
 						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
 							// TODO: Do some magic, like display planet information
+							window.location = "/starsystem/" + self.starmapData[i].name;
 						}
 					}
 				});
@@ -165,7 +166,7 @@ var GAME_ENGINE = {
 					var radius = 1;
 
 					ctx.beginPath();
-					ctx.arc(x, y, 1, 0, 2 * Math.PI, false);
+					ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
 					ctx.fillStyle = self.starmapData[i].color;
 					ctx.fill();
 					ctx.lineWidth = 0;
