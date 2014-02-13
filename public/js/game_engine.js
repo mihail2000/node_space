@@ -26,7 +26,7 @@ var GAME_ENGINE = {
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
-				$.post( '/api/starmap/loadstarmap', { id: '52f9afa350dd2b911373851b' }, function(res) {
+				$.post( '/api/starmap/loadstarmap', { id: '52fb2518d021833b1faf4ad4' }, function(res) {
 					self.starmapData = res.data;
 					self.draw();
 				});
@@ -41,8 +41,17 @@ var GAME_ENGINE = {
 						var sy = (self.starmapData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
 
 						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
-							// TODO: Do some magic, like display planet information
-							window.location = "/starsystem/" + self.starmapData[i].name;
+							$.post('/api/star', { name : self.starmapData[i].name } , function(data) {
+								console.log(data.error);
+								if (typeof data.error !== 'undefined') {
+									// TODO: Handle the error message somehow
+								} else {
+									//$('.signupContainer').replaceWith(data.tpl);
+									console.log(data);
+								}
+							});
+							
+							
 						}
 					}
 				});
