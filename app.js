@@ -14,6 +14,8 @@ app.use(express.bodyParser());
 app.set('view engine', 'html');
 app.set('views', __dirname + '/application/html');
 app.use('/public', express.static(__dirname + '/public'));
+app.use(express.cookieParser());
+app.use(express.cookieSession( { secret: 'something' } ));
 
 // Swig will cache templates for you, but you can disable
 // that and use Express's caching instead, if you like:
@@ -41,6 +43,8 @@ swig.setDefaults({ cache: false });
 
 */
 app.get('*', function (req, res) {
+	console.log(req.session);
+	
 	var core_controller = require(__dirname + '/application/controller/core.js');
 	core_controller.route_get(req, res);
 });
