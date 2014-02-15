@@ -42,7 +42,7 @@ swig.setDefaults({ cache: false });
 }
 
 */
-app.get('*', function (req, res) {
+app.get('(!/favicon)|*', function (req, res) {
 	console.log(req.session);
 	
 	var core_controller = require(__dirname + '/application/controller/core.js');
