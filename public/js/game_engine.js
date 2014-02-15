@@ -218,7 +218,13 @@ var GAME_ENGINE = {
 				});
 				$('#loginsubmit').click(function(e) {
 					$.post('/api/user/login', $('#login').serialize(), function(data) {
-						console.log(data);
+						if (data.data === null) {
+							$('.errorMessage').slideDown(200, function() {
+								setTimeout(function() {$('.errorMessage').hide(200)}, 3000);
+							});							
+						} else {
+							window.location.href="/game";
+						}
 					});
 				});
 			}

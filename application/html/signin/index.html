@@ -8,6 +8,15 @@
 
 {% block content %}
 <div class="initLogin"></div>
+<div class="errorMessage">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4">
+				Unable to login. Please check your username and password.
+			</div>			
+		</div>
+	</div>
+</div>
 <form action="/api/user/login" method="post" id="login">
 	<div class="container">
 		<div class="row">
