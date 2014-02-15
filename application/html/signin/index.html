@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-<form action="/api/user/login" method="post" id="register">
+<div class="initLogin"></div>
+<form action="/api/user/login" method="post" id="login">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-2">
@@ -22,7 +23,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-2">
-				<input id="registersubmit" type="submit" value="submit">Login</button>
+				<input id="loginsubmit" type="submit" value="submit">Login</button>
 			</div>
 		</div>
 	</div>

@@ -35,3 +35,24 @@ exports.register = function(userData, callback) {
 		});
 	});
 }
+
+exports.login = function(loginData, callback) {
+	var required_params = ['username', 'pwd'];
+
+	MongoClient.connect('mongodb://localhost/space', function(err, db) {
+		if(err) throw err;
+		var userModel = require(__dirname + '/../model/matufw_base_model.js');
+		var collection = db.collection('users');
+		var hash = crypto.createHash('md5').update(loginData.pwd).digest('hex');
+		collection.find( {$and: [ {$or: [ {'username' : loginData.username}, {'email' : loginData.username} ] }, {'password' : hash} ]}).toArray(function(err, docs) {
+			if (docs.length > 0) {
+				console.log('User found, password matches');
+				callback( {output: docs[0]} , null);
+			} else {
+				console.log('User not found or password does not match');
+				callback( {output: null}, null);
+			}
+		});
+	});
+
+}

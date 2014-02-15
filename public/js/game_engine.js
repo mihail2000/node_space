@@ -209,6 +209,19 @@ var GAME_ENGINE = {
 					});
 				});
 			}
+		},
+		login: {
+			selector: '.initLogin',
+			init: function() {
+				$('#login').submit(function(e) {
+					e.preventDefault();
+				});
+				$('#loginsubmit').click(function(e) {
+					$.post('/api/user/login', $('#login').serialize(), function(data) {
+						console.log(data);
+					});
+				});
+			}
 		}
 	}
 }
