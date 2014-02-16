@@ -6,10 +6,16 @@ var baseModel = require(__dirname + '/matufw_base_model.js');
 
 function _gameModel() {};
 
-_gameModel.setupNewGame = function(callback) {
-	var gameData = {test: 'test'};
+_gameModel.setupNewGame = function(user, callback) {
+	var create_time = Date.now();
+	var gameData = { userid: user._id,
+					date_created: create_time,
+					last_played: create_time,
+					};
 	_gameModel.create(gameData, function(id) {
-		callback(id);
+		_gameModel.fetchById(id, function(err, obj) {
+			callback(obj);
+		});
 	});
 }
 

@@ -36,8 +36,13 @@ function baseModel(child) {
 			var name = child.primaryId;
 			var collection = db.collection(child.collectionName);
 			var BSON = require('mongodb').BSONPure;
-			var oID = new BSON.ObjectID(primaryId);
-			collection.findOne( { '_id' : oID }, function(err, doc) {
+
+			// TODO: This was a weird way to get around the problem when primaryID was not recognized being a string.
+			// Will have to analyze this futher at some point...
+			var primaryIdStr = new String(primaryId);
+			var oID = new BSON.ObjectID(primaryIdStr);
+			
+			collection.findOne( { '_id' :  oID }, function(err, doc) {
 				if(err) throw err;				
 				var obj = child.createObject(doc);
 				db.close();

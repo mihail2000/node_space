@@ -223,8 +223,19 @@ var GAME_ENGINE = {
 								setTimeout(function() {$('.errorMessage').hide(200)}, 3000);
 							});							
 						} else {
-							window.location.href="/game";
+							window.location.href="/lobby";
 						}
+					});
+				});
+			}
+		},
+		lobby: {
+			selector: '.initLobby',
+			init: function() {
+				$('#newgame').click(function(e) {
+					e.preventDefault();
+					$.post('/api/game/newgame', {}, function(data) {
+						console.log(data);
 					});
 				});
 			}
