@@ -42,6 +42,7 @@ swig.setDefaults({ cache: false });
 }
 
 */
+
 app.get('(!/favicon)|*', function (req, res) {
 	console.log(req.session);
 	
@@ -62,10 +63,8 @@ app.post('/api/*', function (req, res) {
 			var api = require('./application/api/' + api_controller_name + '.js');			
 			api[function_name](req.body, function(data, error) { 
 				if (error === null) {
-					
 					if (typeof data.template !== 'undefined') {					
 						swig.renderFile(__dirname + data.template, {}, function(err, output) {
-							//console.log(err);
 							res.send({ tpl: output });
 							res.end();
 						});
@@ -74,10 +73,10 @@ app.post('/api/*', function (req, res) {
 						res.end();						
 					}
 				} else {
-					res.send({error: 'Error occurred'});
+					res.send({ error: 'Error occurred' });
 					res.end();
 				}
-			});
+			}, req);
 		} else {
 			res.end('Unknown request');
 		}

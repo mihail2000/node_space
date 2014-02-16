@@ -7,6 +7,43 @@ addConfig = function(obj) {
 	obj.config = config;
 }
 
+//restrict = function (req, res, next) {
+restrict = function (req, res, acl, action_name) {
+	var allowed = false;
+	// Find out the type of the user
+	if (req.session.user) {
+		// Logged in user
+		//next();
+		var actionlist = acl.user;
+		if (actionlist !== null) {
+			for (var i = 0; i < actionlist.length; i++) {
+				if (action_name === actionlist[i]) {
+					allowed = true;
+				}
+			}			
+		}
+
+	} else {
+		// Logged out user
+		var actionlist = acl.guest;
+		if (actionlist !== null) {
+			for (var i = 0; i < actionlist.length; i++) {
+				if (action_name === actionlist[i]) {
+					allowed = true;
+				}
+			}
+
+		}
+	}
+
+	if (!allowed) {
+		res.redirect('/');
+		res.end();		
+	}
+
+	return allowed;
+}
+
 exports.route_get = function(req, res) {
 	if (req.originalUrl == '/') {
 		res.render('index', { });
@@ -37,9 +74,15 @@ exports.route_get = function(req, res) {
 		var controller = require(__dirname + '/' + controller_name + '.js');
 
 		if (typeof controller !== 'undefined') {
+			addConfig(controller);
 			if (typeof controller[action_name] !== 'undefined') {
-				addConfig(controller);
-				controller[action_name](req, res);
+				var allowed = true;
+				if (typeof controller.acl !== 'undefined') {
+					allowed = restrict(req, res, controller.acl, action_name);
+				}
+				if (allowed) {
+					controller[action_name](req, res);					
+				}
 			} else if (typeof controller['custom_route'] !== 'undefined') {
 				controller.custom_route(req, res);
 			} else {
