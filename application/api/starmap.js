@@ -13,7 +13,7 @@ exports.loadstarmap = function(data, callback) {
 		
 		var starmapModel = require(__dirname + '/../model/starmap.js');
         starmapModel.loadStarmap(data.id, function() {
-			callback({ output: starmapModel.starmap.planets }, null)
+			callback(null, { output: starmapModel.starmap.planets });
         });
 	});
 }

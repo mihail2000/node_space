@@ -66,7 +66,7 @@ _userModel.register = function(userObject, callback) {
 				db.collection('users').insert(user, function(err, records) {
 					if (err) throw err;
 					console.log("Record added as " + records[0]._id);
-					callback(null, user);
+					callback(null, records[0]);
 				});
 			}
 		});

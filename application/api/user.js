@@ -4,7 +4,13 @@
 	- Login users
 */
 
-exports.register = function(userData, callback) {
+
+/**
+	register
+
+	Register new user to system and creates new session if user gets created successfully 
+*/
+exports.register = function(userData, callback, req) {
 
 	var required_params = ['username', 'email', 'pwd'];
 	var userModel = require(__dirname + '/../model/user.js');
@@ -16,13 +22,23 @@ exports.register = function(userData, callback) {
 
 	userModel.register(user, function(error, data) {
 		if (error === null) {
-			callback(null, 'User already exists');			
+			req.session.user = data;
+			callback(null, { template: '/application/html/signup/signup_success.html' });		
 		} else {
-			callback({ template: '/application/html/signup/signup_success.html' }, null)
+			callback('User already exists', null);
 		}
 	});
 }
 
+/**
+	login
+
+	Sings in an existing user if username and password matches
+
+	Paramters:
+		logindata - username & password pair tried to login
+		callback - callback function called when registration gets completed successfully 
+*/
 exports.login = function(loginData, callback, req) {
 	var required_params = ['username', 'pwd'];
 
@@ -30,9 +46,9 @@ exports.login = function(loginData, callback, req) {
 	userModel.checkLogin(loginData.username, loginData.pwd, function(userObject) {
 		if (userObject !== null) {
 			req.session.user = userObject;
-			callback( {output: userObject} , null);
+			callback(null, {output: userObject});
 		} else {
-			callback( {output: null}, null);
+			callback(null, {output: null});
 		}
 	});
 }

@@ -61,8 +61,8 @@ app.post('/api/*', function (req, res) {
 
 		if (function_name !== '') {
 			var api = require('./application/api/' + api_controller_name + '.js');			
-			api[function_name](req.body, function(data, error) { 
-				if (error === null) {
+			api[function_name](req.body, function(error, data) { 
+				if (error == null) {
 					if (typeof data.template !== 'undefined') {					
 						swig.renderFile(__dirname + data.template, {}, function(err, output) {
 							res.send({ tpl: output });
