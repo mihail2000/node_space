@@ -33,6 +33,46 @@ _userModel.checkLogin = function(username, password, callback) {
 	});
 }
 
+/**
+	register
+
+	Registers new user to system.
+
+	Parameters:
+		userObject - User object to register
+		callback - Callback function that will be called when user has been created.
+					This function will take the 'error' object as a parameter
+*/
+_userModel.register = function(userObject, callback) {
+	var MongoClient = require('mongodb').MongoClient;
+	var crypto = require('crypto');
+
+	MongoClient.connect('mongodb://localhost/space', function(err, db) {
+		if(err) throw err;
+
+		var collection = db.collection('users');
+		collection.find( { $or: [ { 'username' : userObject.username }, { 'email' : userObject.email } ] }).toArray(function(err, docs) {
+			if (docs.length > 0) {
+				console.log('User already exists');
+				callback( { error : 'User already exists' }, null );
+			} else {
+				var hash = crypto.createHash('md5').update(userObject.pwd).digest('hex');
+				var user = {
+					username : userObject.username,
+					email : userObject.email,
+					password : hash
+				};
+
+				db.collection('users').insert(user, function(err, records) {
+					if (err) throw err;
+					console.log("Record added as " + records[0]._id);
+					callback(null, user);
+				});
+			}
+		});
+	});
+}
+
 _userModel.post_cache_data = function() {
 	console.log('post_cache_data');
 }
