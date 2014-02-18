@@ -18,3 +18,12 @@ exports.newgame = function(data, callback, req) {
 		callback(null, { output: {game : newgame} });		
 	});
 }
+
+exports.gamelist = function(data, callback, req) {
+	var gameModel = require(__dirname + '/../model/game.js');
+
+	var user = req.session.user;
+	gameModel.fetchGamelistByUser(user, function(doc) {
+		callback(null, { output: doc });
+	});
+}

@@ -18,5 +18,21 @@ module.exports = testCase({
 
 		});
 
-	}
+	},
+	"Fetch gamelist": function(test) {
+		test.expect(3);
+		var gameModel = require(__dirname + '/../model/game.js');
+		test.ok(typeof gameModel !== 'undefined');
+
+		var userModel = require(__dirname + '/../model/user.js');
+		test.ok(typeof userModel !== 'undefined');
+
+		userModel.fetch('', function(err, user) {
+			gameModel.fetchGamelistByUser(user[0], function(gamelist) {
+				test.ok(gamelist !== null);
+				console.log('gamelist : ' + gamelist);
+				test.done();
+			});
+		});
+	}	
 });

@@ -232,6 +232,10 @@ var GAME_ENGINE = {
 		lobby: {
 			selector: '.initLobby',
 			init: function() {
+				$.post('/api/game/gamelist', {}, function(data) {
+					console.log(data);
+				});
+
 				$('#newgame').click(function(e) {
 					e.preventDefault();
 					$.post('/api/game/newgame', {}, function(data) {

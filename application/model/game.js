@@ -19,6 +19,12 @@ _gameModel.setupNewGame = function(user, callback) {
 	});
 }
 
+_gameModel.fetchGamelistByUser = function(user, callback) {
+	_gameModel.fetch( {userid : user._id }, function(err, doc) {
+		callback(doc);
+	});
+}
+
 _gameModel.collectionName = 'games';
 _gameModel.primaryId = '_id';
 

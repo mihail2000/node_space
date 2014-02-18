@@ -57,7 +57,7 @@ function baseModel(child) {
 			if(err) throw err;
 			var name = child.primaryId;
 			var collection = db.collection(child.collectionName);
-			collection.find().toArray(function(err, doc) {
+			collection.find(query).toArray(function(err, doc) {
 				if(err) throw err;				
 				db.close();
 				callback(err, doc);
