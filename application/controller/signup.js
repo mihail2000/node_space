@@ -7,10 +7,10 @@ exports.action_index = function(req, res) {
 		if (err !== null) {
 			console.log(err);
 			res.send('Unknown request');
-			res.end();					
+			res.end();
 		} else {
 			res.send(html);
-			res.end();
+			//res.end();
 		}
 	});	
 }

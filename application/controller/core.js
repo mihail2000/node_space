@@ -87,11 +87,11 @@ exports.route_get = function(req, res) {
 				controller.custom_route(req, res);
 			} else {
 				console.log('CORE::Unknown action ' + controller_name + ':' + action_name);
-				res.end();
+				//res.end();
 			}
 		} else {
 			console.log('CORE::Unknown controller: ' + controller_name);
-			res.end();
+			//res.end();
 		}
 	}
 }

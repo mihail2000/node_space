@@ -4,6 +4,7 @@
 var express = require('express');
 var app = express();
 var swig  = require('swig');
+var MongoStore = require('connect-mongo')(express);
 var MatuFW = {};
 /**
  * Initializing all necessary objects
@@ -15,7 +16,15 @@ app.set('view engine', 'html');
 app.set('views', __dirname + '/application/html');
 app.use('/public', express.static(__dirname + '/public'));
 app.use(express.cookieParser());
-app.use(express.cookieSession( { secret: 'something' } ));
+app.use(express.session( { 
+	secret : 'lHDS4bObe68QtAnhZ9gRYOrZof3wGUkXZWwPUs9EABY63HbWGh0YYZ8mxRItsdX6ralOpN6XIB9NNbmeBDdHHfnWM0VzDkmt8shG' ,
+	store: new MongoStore({
+			db: 'space'
+	}),
+	cookie : {
+		maxAge : 1000000 }
+	})
+);
 
 // Swig will cache templates for you, but you can disable
 // that and use Express's caching instead, if you like:
@@ -43,9 +52,7 @@ swig.setDefaults({ cache: false });
 
 */
 
-app.get('(!/favicon)|*', function (req, res) {
-	console.log(req.session);
-	
+app.get('/|signin|signup|game|logout|starsystem', function (req, res) {
 	var core_controller = require(__dirname + '/application/controller/core.js');
 	core_controller.route_get(req, res);
 });
@@ -66,15 +73,15 @@ app.post('/api/*', function (req, res) {
 					if (typeof data.template !== 'undefined') {					
 						swig.renderFile(__dirname + data.template, {}, function(err, output) {
 							res.send({ tpl: output });
-							res.end();
+							//res.end();
 						});
 					} else {
 						res.send({ data: data.output });
-						res.end();						
+						//res.end();						
 					}
 				} else {
 					res.send({ error: 'Error occurred' });
-					res.end();
+					//res.end();
 				}
 			}, req);
 		} else {

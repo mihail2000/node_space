@@ -24,6 +24,7 @@ _userModel.checkLogin = function(username, password, callback) {
 		var pwdHash = _userModel.encodePassword(password);
 		var collection = db.collection('users');
 		collection.find( {$and: [ {$or: [ {'username' : username}, {'email' : username} ] }, {'password' : pwdHash} ]}).toArray(function(err, docs) {
+			db.close();
 			var userObject = null;
 			if (docs.length > 0) {
 				var userObject = _userModel.createObject(docs[0]);
@@ -65,9 +66,10 @@ _userModel.register = function(userObject, callback) {
 
 				db.collection('users').insert(user, function(err, records) {
 					if (err) throw err;
+					db.close();					
 					console.log("Record added as " + records[0]._id);
 					callback(null, records[0]);
-				});
+				});	
 			}
 		});
 	});
