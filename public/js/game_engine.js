@@ -26,7 +26,13 @@ var GAME_ENGINE = {
 			selector: '.initStarmap',
 			init: function() {
 				self = GAME_ENGINE.modules.starmap;
-				$.post( '/api/starmap/loadstarmap', { id: '52fb2518d021833b1faf4ad4' }, function(res) {
+				var path = window.location.pathname;
+				var separator = path.lastIndexOf('/');
+				var gameid = '';
+				if (separator > -1) {
+					gameid = path.substring(separator + 1);
+				}
+				$.post( '/api/starmap/loadstarmap', { gameid: gameid }, function(res) {
 					self.starmapData = res.data;
 					self.draw();
 				});
@@ -232,14 +238,17 @@ var GAME_ENGINE = {
 		lobby: {
 			selector: '.initLobby',
 			init: function() {
-				$.post('/api/game/gamelist', {}, function(data) {
-					console.log(data);
+				$.post('/api/game/gamelist', {}, function(response) {
+					console.log(response);
+					for (var i = 0; i < response.data.length; i++) {
+						$('.gamelist').append('<div class="row"><div class="col-md-4"><a href="/game/' + response.data[i]._id + '">' + response.data[i]._id + '</a></div></div>');
+					}
 				});
 
 				$('#newgame').click(function(e) {
 					e.preventDefault();
-					$.post('/api/game/newgame', {}, function(data) {
-						console.log(data);
+					$.post('/api/game/newgame', {}, function(response) {
+						console.log(response);
 					});
 				});
 			}

@@ -19,16 +19,21 @@ module.exports = testCase({
         var gameModel = require(__dirname + '/../model/game.js');
         test.ok(typeof gameModel !== 'undefined');
 
-        gameModel.setupNewGame(function(id) {
-            test.ok(id !== null);
-            console.log('Game ID : ' + id);
+        var userModel = require(__dirname + '/../model/user.js');
 
-            starmapModel.randomizeStarmap(id, 1000, function() {
-                starmapModel.saveStarmap();
-                test.ok(starmapModel.starmap.planets.length == 1000);
-                test.done();
+        userModel.fetch('', function(err, user) {
+            gameModel.setupNewGame(user[0], function(newgame) {
+                test.ok(newgame !== null);
+                console.log('Game ID : ' + newgame._id);
+
+                starmapModel.randomizeStarmap(newgame._id, 1000, function() {
+                    starmapModel.saveStarmap();
+                    test.ok(starmapModel.starmap.planets.length == 1000);
+                    test.done();
+                });
             });
         });
+
         //test.done();
     },
     "Read starmap": function(test) {
@@ -36,7 +41,7 @@ module.exports = testCase({
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
 
-        starmapModel.loadStarmap('52f84276aaa7dd6e0b8205c8', function() {
+        starmapModel.loadStarmap('53045ddfe1b9db84066ef98e', function() {
             test.ok(starmapModel.starmap.planets.length > 0)
             test.done();
         });

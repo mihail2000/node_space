@@ -1,5 +1,11 @@
 // Starmap API
 //var crypto = require('crypto');
+
+exports.acl = {
+	'guest' : null,
+	'user' : ['loadstarmap']
+}
+
 var MongoClient = require('mongodb').MongoClient;
 
 exports.loadstarmap = function(data, callback) {
@@ -10,9 +16,8 @@ exports.loadstarmap = function(data, callback) {
 
 	MongoClient.connect('mongodb://localhost/space', function(err, db) {
 		if(err) throw err;
-		
 		var starmapModel = require(__dirname + '/../model/starmap.js');
-        starmapModel.loadStarmap(data.id, function() {
+        starmapModel.loadStarmap(data.gameid, function() {
 			callback(null, { output: starmapModel.starmap.planets });
         });
 	});

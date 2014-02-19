@@ -52,7 +52,7 @@ swig.setDefaults({ cache: false });
 
 */
 
-app.get('/|signin|signup|game|logout|starsystem', function (req, res) {
+app.get('/|/signin|/signup|/game|/logout|/starsystem|/lobby', function (req, res) {
 	var core_controller = require(__dirname + '/application/controller/core.js');
 	core_controller.route_get(req, res);
 });
