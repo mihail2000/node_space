@@ -18,7 +18,12 @@ exports.loadstarmap = function(data, callback) {
 		if(err) throw err;
 		var starmapModel = require(__dirname + '/../model/starmap.js');
         starmapModel.loadStarmap(data.gameid, function() {
-			callback(null, { output: starmapModel.starmap.planets });
+        	if (typeof starmapModel.starmap !== 'undefined') {
+				callback(null, { output: starmapModel.starmap.planets });
+        	} else {
+        		console.log('API:starmap:Data integrity error');
+        		callback('Data integrity error', null);
+        	}
         });
 	});
 }
