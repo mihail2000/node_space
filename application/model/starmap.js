@@ -65,9 +65,9 @@ _starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
   		if (err) throw err;
   		var planetNames = [];
   		var nameIteration = 0;
-  		var starmap = [];
-  		console.log(gameID);
-  		_starmapModel.starmap.gameid = String(gameID);
+  		var starmap = { gameid : String(gameID),
+						planets : [] };
+  		//_starmapModel.starmap.gameid = String(gameID);
 
 		for (var i = 0; i < countOfStars; i++) {
 			// If we have exchausted all planet names, re-use the old ones with II, III, IV etc.
@@ -85,17 +85,18 @@ _starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
 				color: __StarColorRandomizer()
 			}
 			planetNames.splice(nameIdx, 1);
-			starmap.push(star);
+			starmap.planets.push(star);
 
 		}
-		_starmapModel.starmap.planets = starmap;
-		callback();
+		callback(starmap);
 	});
 }
 
-_starmapModel.saveStarmap = function(callback) {
+_starmapModel.saveStarmap = function(starmap, callback) {
 	var i = 0;
-	_starmapModel.create(_starmapModel.starmap);
+	_starmapModel.create(starmap, function(id) {
+		callback(id);
+	});
 }
 
 /*
@@ -109,7 +110,7 @@ _starmapModel.loadStar = function(gameID, starID, callback) {
 }*/
 
 _starmapModel.loadStarmap = function(gameID, callback) {
-	_starmapModel.fetch( { gameid : gameID }, function(err, doc) {
+	_starmapModel.fetch( { gameid : String(gameID) }, function(err, doc) {
 		_starmapModel.starmap = doc[0];
 		callback();
     });
