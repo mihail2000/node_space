@@ -1,0 +1,18 @@
+BUGs:
+
+- Creating multiple (=2) new games in a row will crash the server
+
+TODO:
+
+- Move some of the core modules around. I.e. core.js should not be in application/controller
+- Implement core-level function(s) to check the proper parameters have been passed to API / controller
+- Implement ACL control for API
+- Plan API needed
+- Rename the matufw_base_model
+- Separate game engine (APIs and models) completely from mid-tier (controllers). ...maybe...
+- Create server side game loop
+- Figure out how to synchronize server side game loop and client side game loop
+- Add proper comments to all API and model classes
+
+DONE:
+- Move API handling to core controller (or create API core controller, which would be even better)

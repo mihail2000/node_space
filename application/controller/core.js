@@ -95,3 +95,37 @@ exports.route_get = function(req, res) {
 		}
 	}
 }
+
+exports.route_api = function(req, res) {
+	var i = req.route.params[0].search('/');
+	
+	if (i > -1) {
+		var api_controller_name = req.route.params[0].substring(0, i);
+		// Find the function name
+		var function_name = req.route.params[0].substring(i + 1);
+
+		if (function_name !== '') {
+			var api = require(__dirname + '/../api/' + api_controller_name + '.js');			
+			api[function_name](req.body, function(error, data) { 
+				if (error == null) {
+					if (typeof data.template !== 'undefined') {					
+						swig.renderFile(__dirname + data.template, {}, function(err, output) {
+							res.send({ tpl: output });
+							//res.end();
+						});
+					} else {
+						res.send({ data: data.output });
+						//res.end();						
+					}
+				} else {
+					res.send({ error: 'Error occurred' });
+					//res.end();
+				}
+			}, req);
+		} else {
+			res.end('Unknown request');
+		}
+	} else {
+		res.end('Unknown request');		
+	}	
+}
