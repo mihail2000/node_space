@@ -106,22 +106,32 @@ exports.route_api = function(req, res) {
 
 		if (function_name !== '') {
 			var api = require(__dirname + '/../api/' + api_controller_name + '.js');			
-			api[function_name](req.body, function(error, data) { 
-				if (error == null) {
-					if (typeof data.template !== 'undefined') {					
-						swig.renderFile(__dirname + data.template, {}, function(err, output) {
-							res.send({ tpl: output });
-							//res.end();
-						});
+
+			var allowed = true;
+			if (typeof api.acl !== 'undefined') {
+				allowed = restrict(req, res, api.acl, function_name);
+			}
+			if (allowed) {
+				api[function_name](req.body, function(error, data) { 
+					if (error == null) {
+						if (typeof data.template !== 'undefined') {					
+							swig.renderFile(__dirname + data.template, {}, function(err, output) {
+								res.send({ tpl: output });
+								//res.end();
+							});
+						} else {
+							res.send({ data: data.output });
+							//res.end();						
+						}
 					} else {
-						res.send({ data: data.output });
-						//res.end();						
+						res.send({ error: 'Error occurred' });
+						//res.end();
 					}
-				} else {
-					res.send({ error: 'Error occurred' });
-					//res.end();
-				}
-			}, req);
+				}, req);
+			} else {
+				console.log('Access denied');
+				res.end('Access denied');
+			}
 		} else {
 			res.end('Unknown request');
 		}

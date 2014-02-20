@@ -6,7 +6,6 @@ TODO:
 
 - Move some of the core modules around. I.e. core.js should not be in application/controller
 - Implement core-level function(s) to check the proper parameters have been passed to API / controller
-- Implement ACL control for API
 - Plan API needed
 - Rename the matufw_base_model
 - Separate game engine (APIs and models) completely from mid-tier (controllers). ...maybe...
@@ -16,3 +15,4 @@ TODO:
 
 DONE:
 - Move API handling to core controller (or create API core controller, which would be even better)
+- Implement ACL control for API

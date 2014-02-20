@@ -4,7 +4,7 @@
 
 exports.acl = {
 	'guest' : null,
-	'user' : ['newgame']
+	'user' : ['newgame', 'gamelist']
 }
 
 exports.newgame = function(data, callback, req) {
