@@ -238,19 +238,22 @@ var GAME_ENGINE = {
 		lobby: {
 			selector: '.initLobby',
 			init: function() {
+				self = GAME_ENGINE.modules.lobby;
 				$.post('/api/game/gamelist', {}, function(response) {
-					console.log(response);
 					for (var i = 0; i < response.data.length; i++) {
-						$('.gamelist').append('<div class="row"><div class="col-md-4"><a href="/game/' + response.data[i]._id + '">' + response.data[i]._id + '</a></div></div>');
+						self.addGame(response.data[i]);
 					}
 				});
 
 				$('#newgame').click(function(e) {
 					e.preventDefault();
 					$.post('/api/game/newgame', {}, function(response) {
-						console.log(response);
+						self.addGame(response.data.game);
 					});
 				});
+			},
+			addGame: function(gameData) {
+					$('.gamelist').append('<div class="row"><div class="col-md-4"><a href="/game/' + gameData._id + '">' + gameData._id + '</a></div></div>');				
 			}
 		}
 	}
