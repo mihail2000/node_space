@@ -16,14 +16,21 @@ exports.newgame = function(data, callback, req) {
 	var user = req.session.user;
 
 	gameModel.setupNewGame(user, function(newgame) {
-		starmapModel.randomizeStarmap(newgame._id, 1, function(starmap) {
+		starmapModel.randomizeStarmap(newgame._id, 1000, function(starmap) {
 			starmapModel.saveStarmap(starmap, function(){
 
-				var dataToMongo = [];
+				var dataToMongo = null;
 
 				for (var i = 0; i < starmap.length; i++) {
+					//console.log(starmap);
 					starSystem.randomizeStarsystem(newgame._id, starmap[i], function(data) {
-						dataToMongo.push(data);
+
+						if (dataToMongo == null) {
+							dataToMongo = data;							
+						} else {
+							var tmpArray = dataToMongo.concat(data);
+							dataToMongo = tmpArray;
+						}
 					});
 				}
 
