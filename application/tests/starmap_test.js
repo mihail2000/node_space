@@ -7,7 +7,7 @@ module.exports = testCase({
         test.ok(typeof starmapModel !== 'undefined');
 
         starmapModel.randomizeStarmap(0, 1000, function(starmap) {
-			test.ok(starmap.planets.length == 1000);
+			test.ok(starmap.length == 1000);
 	        test.done();
         });
     },
@@ -53,7 +53,7 @@ module.exports = testCase({
                     starmapModel.saveStarmap(starmap, function(id) {
                         test.ok(id != null);
                         starmapModel.loadStarmap(gameId, function() {
-                            test.ok(starmapModel.starmap.planets.length > 0)
+                            test.ok(starmapModel.starmap.length > 0)
                             test.done();
                         });
                     });

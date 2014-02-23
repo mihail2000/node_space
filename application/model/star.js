@@ -41,7 +41,7 @@ _starModel.randomizeStarsystem = function(gameID, starSystem, callback) {
 }
 
 _starModel.loadStar = function(starId, callback) {
-	
+	callback();	
 }
 
 var baseModel = new baseModel(_starModel);

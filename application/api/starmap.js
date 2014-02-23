@@ -17,9 +17,12 @@ exports.loadstarmap = function(data, callback) {
 	MongoClient.connect('mongodb://localhost/space', function(err, db) {
 		if(err) throw err;
 		var starmapModel = require(__dirname + '/../model/starmap.js');
-        starmapModel.loadStarmap(data.gameid, function() {
+		var BSON = require('mongodb').BSONPure;
+		var oID = new BSON.ObjectID(data.gameid);
+
+        starmapModel.loadStarmap(oID, function() {
         	if (typeof starmapModel.starmap !== 'undefined') {
-				callback(null, { output: starmapModel.starmap.planets });
+				callback(null, { output: starmapModel.starmap });
         	} else {
         		console.log('API:starmap:Data integrity error');
         		callback('Data integrity error', null);

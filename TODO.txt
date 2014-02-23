@@ -4,6 +4,23 @@ BUGs:
 
 TODO:
 
+- TOP-PRIO: Refactor how starmaps are stored into the database. Using objects of this scale is not wise.
+	Couple different ideas:
+		1. Use multiple databases: one database per game. Database name could be 'game_1234'
+			PROS:
+				Can easily shard this across multiple servers
+				Locking wouldn't be a problem
+
+			CONS:
+				Not sure if there is some kind of scalability problem
+				What about data that should be shared across different databases? (actually, this would be problem anyway, if the games are split across multiple servers)
+
+		2. Use multiple collections in one database. Collection names could be 'starmap_<game_id>' e.g. 'starmap_38hfdhfy3ry387'
+
+		3. Enhanced #1: One central database for all users and other shared data that doesn't get updated too often
+
+
+- Update that frikin session when something happens
 - Move some of the core modules around. I.e. core.js should not be in application/controller
 - Implement core-level function(s) to check the proper parameters have been passed to API / controller
 - Plan API needed
@@ -16,3 +33,4 @@ TODO:
 DONE:
 - Move API handling to core controller (or create API core controller, which would be even better)
 - Implement ACL control for API
+- Refactored how starmaps are stored into the database

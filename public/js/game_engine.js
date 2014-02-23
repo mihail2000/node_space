@@ -33,6 +33,7 @@ var GAME_ENGINE = {
 					gameid = path.substring(separator + 1);
 				}
 				$.post( '/api/starmap/loadstarmap', { gameid: gameid }, function(res) {
+					console.log(res.data);
 					self.starmapData = res.data;
 					self.draw();
 				});
@@ -47,8 +48,7 @@ var GAME_ENGINE = {
 						var sy = (self.starmapData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
 
 						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
-							$.post('/api/star', { name : self.starmapData[i].name } , function(data) {
-								console.log(data.error);
+							$.post('/api/star/loadstardata', { id : self.starmapData[i].name } , function(data) {
 								if (typeof data.error !== 'undefined') {
 									// TODO: Handle the error message somehow
 								} else {

@@ -22,7 +22,7 @@ app.use(express.session( {
 			db: 'space'
 	}),
 	cookie : {
-		maxAge : 1000000 }
+		maxAge : 100000000 }
 	})
 );
 
