@@ -9,8 +9,14 @@ exports.loadstardata = function(data, callback) {
 		if(err) throw err;
 		
 		var starModel = require(__dirname + '/../model/star.js');
-        starModel.loadStar(data.id, function() {
-			callback(null, { output: 'Foo' });
+
+		var BSON = require('mongodb').BSONPure;
+		var gameObjID = new BSON.ObjectID(data.gameid);
+		var starObjID = new BSON.ObjectID(data.starid);
+
+        starModel.loadStar(gameObjID, starObjID, function(err, doc) {
+        	console.log(doc);
+			callback(err, { output: doc });
         });
 	});
 }

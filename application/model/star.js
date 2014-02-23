@@ -38,8 +38,11 @@ _starModel.randomizeStarsystem = function(gameID, solarSystem, callback) {
 	//});
 }
 
-_starModel.loadStar = function(starId, callback) {
-	callback();	
+_starModel.loadStar = function(gameId, starId, callback) {
+	_starModel.fetch( {$and: [ {gameid : gameId, starid : starId} ]}, function(err, doc) {
+		console.log('starId ' + doc);
+		callback(err, doc);
+	}); 
 }
 
 var baseModel = new baseModel(_starModel);
