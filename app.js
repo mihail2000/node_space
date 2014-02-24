@@ -1,4 +1,8 @@
 /**
+	Entry point for the application
+*/
+
+/**
  * Module dependencies.
  */
 var express = require('express');
@@ -26,6 +30,33 @@ app.use(express.session( {
 	})
 );
 
+/**
+	setTemplateVariables
+
+	Helper function to make certain session objects / variables available to swig temlpates.
+	Whenever there is a need for global access of variables in templates, add them in here.
+
+	TODO: Should move this into some sort of helper module and add some sort of configuration array to pass to the function.
+	e.g. 
+	var config = [
+		'current_user' : 'req.session.user',
+		'gameid' : 'req.session.gameid'
+	]
+
+*/
+setTemplateVariables = function(req) {
+	if (req.session.user != null) {
+		app.locals.current_user = req.session.user;
+	} else {
+		delete app.locals.current_user;
+	}
+	if (req.session.gameid != null) {
+		app.locals.gameid = req.session.gameid;
+	} else {
+		delete app.locals.gameid;
+	}
+}
+
 // Swig will cache templates for you, but you can disable
 // that and use Express's caching instead, if you like:
 app.set('view cache', false);
@@ -34,25 +65,9 @@ swig.setDefaults({ cache: false });
 // NOTE: You should always cache templates in a production environment.
 // Don't leave both of these to `false` in production!
 
-/**
- * Initialize routes based on available controllers
- * TODO: This is not very scalable solution
- */
-/*MatuFW.initializeRoutes = function() {
-	var fs = require('fs');
-	fs.readdir(__dirname + '/application/controller', function(err, files) {
-		var routes = '/';
-
-		for (var i = 0; i < files.length; i++) {
-			routes += '|' + files;
-		}
-		console.log(routes);
-	});
-}
-
-*/
-
+// TODO: There is something weird happening with this freaking system. This currently matches all possible routes.
 app.get('/|/signin|/signup|/game|/logout|/starsystem|/lobby', function (req, res) {
+	setTemplateVariables(req);
 	var core_controller = require(__dirname + '/application/controller/core.js');
 	core_controller.route_get(req, res);
 });

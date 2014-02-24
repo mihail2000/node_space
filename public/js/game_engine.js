@@ -47,16 +47,7 @@ var GAME_ENGINE = {
 						var sy = (self.starmapData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
 
 						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
-							$.post('/api/star/loadstardata', { gameid: gameid, starid : self.starmapData[i]._id } , function(data) {
-								if (typeof data.error !== 'undefined') {
-									// TODO: Handle the error message somehow
-								} else {
-									//$('.signupContainer').replaceWith(data.tpl);
-									console.log(data);
-								}
-							});
-							
-							
+							window.location.href="/planet/" + gameid + '/' + self.starmapData[i]._id;
 						}
 					}
 				});
@@ -253,6 +244,32 @@ var GAME_ENGINE = {
 			},
 			addGame: function(gameData) {
 					$('.gamelist').append('<div class="row"><div class="col-md-4"><a href="/game/' + gameData._id + '">' + gameData._id + '</a></div></div>');				
+			}
+		},
+		planet: {
+			selector: '.initPlanet',
+			init: function() {
+				var path = window.location.pathname;
+				var separator = path.lastIndexOf('/');
+				var starid = '';
+				if (separator > -1) {
+					starid = path.substring(separator + 1);
+				}
+				
+				var gameid = GLOBAL_DATA.gameid; 
+
+				if (gameid != null && starid != null) {
+					$.post('/api/star/loadstardata', { gameid: gameid, starid : starid } , function(data) {
+					//	if (typeof data.error !== 'undefined') {
+							// TODO: Handle the error message somehow
+					//	} else {
+							//$('.signupContainer').replaceWith(data.tpl);
+							console.log(data);
+					//	}
+					});					
+				}
+							
+
 			}
 		}
 	}

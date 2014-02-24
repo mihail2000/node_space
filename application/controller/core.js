@@ -1,4 +1,6 @@
-// Core controller
+/**
+	Core controller
+*/
 
 addConfig = function(obj) {
 	config = {
@@ -84,6 +86,7 @@ exports.route_get = function(req, res) {
 					controller[action_name](req, res);					
 				}
 			} else if (typeof controller['custom_route'] !== 'undefined') {
+				//controller.render = render;
 				controller.custom_route(req, res);
 			} else {
 				console.log('CORE::Unknown action ' + controller_name + ':' + action_name);
