@@ -263,95 +263,118 @@ var GAME_ENGINE = {
 				if (gameid != null && starid != null) {
 					$.post('/api/star/loadstardata', { gameid: gameid, starid : starid } , function(output) {
 
-						var canvas=document.getElementById('mainarea');
-						var ctx=canvas.getContext('2d');
-						ctx.fillStyle='#FFFFFF';
-						ctx.clearRect(0, 0, canvas.width, canvas.height);
+						var start = 0;
 
-						// Draw the star
-
-						var centerX = 500;
-						var centerY = 300;
-
-						ctx.beginPath();
-						ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI, false);
-						ctx.fillStyle = 'yellow';
-						ctx.fill();
-						ctx.lineWidth = 0;
-						ctx.strokeStyle = 'yellow';
-						ctx.stroke();
-
-						for (var i = 0; i < output.data.length; i++) {
-
-							var pos = output.data[i].position;
-							var radius = output.data[i].radius;
-
-							var x;
-							var y;
-							switch (pos) {
-								case 0:
-									x = centerX;
-									y = centerY - radius;
-									break;
-
-								case 1:
-									x = centerX + radius;
-									y = centerY;
-									break;
-
-								case 2:
-									x = centerX;
-									y = centerY + radius;
-									break;
-
-								case 3:
-									x = centerX - radius;
-									y = centerY;
-									break;
-
-								case 4:
-									x = centerX + Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-									y = centerY - Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-									break;
-
-								case 5:
-									x = centerX + Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-									y = centerY + Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-									break;
-
-								case 6:
-									x = centerX - Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-									y = centerY - Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-									break;
-
-								case 7:
-									x = centerX - Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-									y = centerY + Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-									break;
+						setInterval(function() {
+							start++;
+							if (start > 360) {
+								start = 0;
 							}
 
-							ctx.beginPath();
-							ctx.arc(500, 300, radius, 0, 2 * Math.PI, false);
-							ctx.lineWidth = 0;
-							ctx.strokeStyle = "rgb(50,50,50)";
-							ctx.stroke();
+							var canvas=document.getElementById('mainarea');
+							var ctx=canvas.getContext('2d');
+							ctx.fillStyle='#FFFFFF';
+							ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-							radius = 4;
+							// Draw the star
+
+							var centerX = 500;
+							var centerY = 300;
 
 							ctx.beginPath();
-							ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-							ctx.fillStyle = 'blue';
+							ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI, false);
+							ctx.fillStyle = 'yellow';
 							ctx.fill();
 							ctx.lineWidth = 0;
-							ctx.strokeStyle = 'blue';
+							ctx.strokeStyle = 'yellow';
 							ctx.stroke();
 
-							ctx.fillStyle = "white";
-							ctx.font = "10px Verdana";
-							ctx.fillText(output.data[i].name, x + 5, y + 3);
+							for (var i = 0; i < output.data.length; i++) {
+
+								var pos = output.data[i].position;
+								var radius = output.data[i].radius;
+
+								var x;
+								var y;
+								x = centerX + Math.floor(Math.cos( (start + (pos * 45)) * Math.PI / 180) * radius);
+								y = centerY + Math.floor(Math.sin( (start + (pos * 45)) * Math.PI / 180) * radius);
+
+/*
+								
+								switch (pos) {
+									case 0:
+										origPos = 0;
+										//x = centerX;
+										//y = centerY - radius;
+										break;
+
+									case 1:
+										origPos = 45;
+//										x = centerX + radius;
+//										y = centerY;
+										break;
+
+									case 2:
+										origPos = 90;
+//										x = centerX;
+//										y = centerY + radius;
+										break;
+
+									case 3:
+										origPos = 90 + 45;
+										x = centerX - radius;
+										y = centerY;
+										break;
+
+									case 4:
+										x = centerX + Math.floor(Math.cos(start * Math.PI / 180) * radius);
+										y = centerY - Math.floor(Math.sin(start * Math.PI / 180) * radius);
+										break;
+
+									case 5:
+										x = centerX + Math.floor(Math.cos(45 * Math.PI / 180) * radius);
+										y = centerY + Math.floor(Math.sin(45 * Math.PI / 180) * radius);
+										break;
+
+									case 6:
+										x = centerX - Math.floor(Math.cos(45 * Math.PI / 180) * radius);
+										y = centerY - Math.floor(Math.sin(45 * Math.PI / 180) * radius);
+										break;
+
+									case 7:
+										x = centerX - Math.floor(Math.cos(45 * Math.PI / 180) * radius);
+										y = centerY + Math.floor(Math.sin(45 * Math.PI / 180) * radius);
+										break;
+								}*/
+
+								ctx.beginPath();
+								ctx.arc(500, 300, radius, 0, 2 * Math.PI, false);
+								ctx.lineWidth = 0;
+								ctx.strokeStyle = "rgb(50,50,50)";
+								ctx.stroke();
+
+								radius = 4;
+
+								ctx.beginPath();
+								ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+								ctx.fillStyle = 'blue';
+								ctx.fill();
+								ctx.lineWidth = 0;
+								ctx.strokeStyle = 'blue';
+								ctx.stroke();
+
+								ctx.fillStyle = "white";
+								ctx.font = "10px Verdana";
+								ctx.fillText(output.data[i].name, x + 5, y + 3);
 
 
-						}
+							}
+
+
+							//console.log('he');
+						}, 200);
+
+
 
 					//	if (typeof data.error !== 'undefined') {
 							// TODO: Handle the error message somehow
