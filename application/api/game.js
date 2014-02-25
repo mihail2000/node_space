@@ -14,9 +14,11 @@ exports.newgame = function(data, callback, req) {
 	var starmapModel = require(__dirname + '/../model/starmap.js');
     var starSystem = require(__dirname + '/../model/star.js');
 	var user = req.session.user;
+	var BSON = require('mongodb').BSONPure;
+	var userID = new BSON.ObjectID(user._id);
 
 	gameModel.setupNewGame(user, function(newgame) {
-		starmapModel.randomizeStarmap(newgame._id, user._id, 1000, function(starmap) {
+		starmapModel.randomizeStarmap(newgame._id, userID, 1000, function(starmap) {
 			starmapModel.saveStarmap(starmap, function(){
 
 				var dataToMongo = null;

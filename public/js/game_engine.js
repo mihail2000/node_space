@@ -32,7 +32,8 @@ var GAME_ENGINE = {
 				if (separator > -1) {
 					gameid = path.substring(separator + 1);
 				}
-				$.post( '/api/starmap/loadstarmap', { gameid: gameid }, function(res) {
+
+				$.post( '/api/starmap/loadstarmap', { gameid: gameid, userid: GLOBAL_DATA.current_user }, function(res) {
 					self.starmapData = res.data;
 					self.centerOnOwn();
 					self.draw();

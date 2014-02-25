@@ -14,19 +14,18 @@ exports.loadstarmap = function(data, callback) {
 	//var controllerUtils = require('../utils/controllerutil.js');
 	//controllerUtils.checkParams(required_params, )
 
-	MongoClient.connect('mongodb://localhost/space', function(err, db) {
-		if(err) throw err;
-		var starmapModel = require(__dirname + '/../model/starmap.js');
-		var BSON = require('mongodb').BSONPure;
-		var oID = new BSON.ObjectID(data.gameid);
+	var starmapModel = require(__dirname + '/../model/starmap.js');
+	var BSON = require('mongodb').BSONPure;
+	var gameID = new BSON.ObjectID(data.gameid);
 
-        starmapModel.loadStarmap(oID, function() {
-        	if (typeof starmapModel.starmap !== 'undefined') {
-				callback(null, { output: starmapModel.starmap });
-        	} else {
-        		console.log('API:starmap:Data integrity error');
-        		callback('Data integrity error', null);
-        	}
-        });
+	var userID = new BSON.ObjectID(data.userid);
+
+	starmapModel.loadFOWStarmap(gameID, userID, function(data) {
+		if (typeof starmapModel.starmap !== 'undefined') {
+			callback(null, { output: data });
+		} else {
+			console.log('API:starmap:Data integrity error');
+			callback('Data integrity error', null);
+		}
 	});
 }

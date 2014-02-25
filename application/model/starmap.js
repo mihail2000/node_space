@@ -118,10 +118,36 @@ _starmapModel.loadStar = function(gameID, starID, callback) {
 
 _starmapModel.loadStarmap = function(gameID, callback) {
 	_starmapModel.fetch( { gameid : gameID }, function(err, doc) {
-		_starmapModel.starmap = doc;
-		callback();
+		//_starmapModel.starmap = doc;
+		callback(doc);
     });
 }
+
+_starmapModel.loadFOWStarmap = function(gameID, userID, callback) {
+	var starmap;
+	var visibleDistance = 150;
+	_starmapModel.fetch( {$and: [{ gameid : gameID, ownerid : userID } ]}, function(err, doc) {
+		starmap = doc;
+		_starmapModel.fetch( { gameid : gameID }, function(err, doc) {
+			var visibleStars = [];
+			for (var i = 0; i < doc.length; i++) {
+				for (var j = 0; j < starmap.length; j++) {
+					if (doc[i].x > (starmap[j].x - visibleDistance) &&
+						doc[i].x < (starmap[j].x + visibleDistance) &&
+						doc[i].y > (starmap[j].y - visibleDistance) &&
+						doc[i].y < (starmap[j].y + visibleDistance)) {
+							visibleStars[visibleStars.length] = doc[i];
+					}
+				}	
+			}
+			visibleStars[visibleStars.length] = starmap;
+			_starmapModel.starmap = visibleStars;
+			callback(visibleStars);
+	    });
+
+	});
+}
+
 
 _starmapModel.collectionName = 'starmaps';
 _starmapModel.primaryId = '_id';
