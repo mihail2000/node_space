@@ -248,7 +248,12 @@ var GAME_ENGINE = {
 		},
 		planet: {
 			selector: '.initPlanet',
+			self: null,
+			planetData: null,
+			visible_area: { x: 0, y: 0, width: 1000, height: 800 },
+			target_area: { x: 0, y: 0, width: 1000, height: 800 },			
 			init: function() {
+				self = GAME_ENGINE.modules.planet;
 				var path = window.location.pathname;
 				var separator = path.lastIndexOf('/');
 				var starid = '';
@@ -264,6 +269,7 @@ var GAME_ENGINE = {
 					$.post('/api/star/loadstardata', { gameid: gameid, starid : starid } , function(output) {
 
 						var start = 0;
+						self.planetData = output.data;
 
 						setInterval(function() {
 							start++;
@@ -298,54 +304,8 @@ var GAME_ENGINE = {
 								var y;
 								x = centerX + Math.floor(Math.cos( (start + (pos * 45)) * Math.PI / 180) * radius);
 								y = centerY + Math.floor(Math.sin( (start + (pos * 45)) * Math.PI / 180) * radius);
-
-/*
-								
-								switch (pos) {
-									case 0:
-										origPos = 0;
-										//x = centerX;
-										//y = centerY - radius;
-										break;
-
-									case 1:
-										origPos = 45;
-//										x = centerX + radius;
-//										y = centerY;
-										break;
-
-									case 2:
-										origPos = 90;
-//										x = centerX;
-//										y = centerY + radius;
-										break;
-
-									case 3:
-										origPos = 90 + 45;
-										x = centerX - radius;
-										y = centerY;
-										break;
-
-									case 4:
-										x = centerX + Math.floor(Math.cos(start * Math.PI / 180) * radius);
-										y = centerY - Math.floor(Math.sin(start * Math.PI / 180) * radius);
-										break;
-
-									case 5:
-										x = centerX + Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-										y = centerY + Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-										break;
-
-									case 6:
-										x = centerX - Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-										y = centerY - Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-										break;
-
-									case 7:
-										x = centerX - Math.floor(Math.cos(45 * Math.PI / 180) * radius);
-										y = centerY + Math.floor(Math.sin(45 * Math.PI / 180) * radius);
-										break;
-								}*/
+								self.planetData[i].x = x;
+								self.planetData[i].y = y;
 
 								ctx.beginPath();
 								ctx.arc(500, 300, radius, 0, 2 * Math.PI, false);
@@ -366,23 +326,25 @@ var GAME_ENGINE = {
 								ctx.fillStyle = "white";
 								ctx.font = "10px Verdana";
 								ctx.fillText(output.data[i].name, x + 5, y + 3);
-
-
 							}
-
-
-							//console.log('he');
 						}, 200);
-
-
-
-					//	if (typeof data.error !== 'undefined') {
-							// TODO: Handle the error message somehow
-					//	} else {
-							//$('.signupContainer').replaceWith(data.tpl);
-					//	}
 					});					
 				}
+
+				$('#mainarea').click(function(e) {
+					var x = Math.floor((e.pageX-$("#mainarea").offset().left));
+					var y = Math.floor((e.pageY-$("#mainarea").offset().top));
+					var canvas=document.getElementById('mainarea');
+
+					for (var i = 0; i < self.planetData.length; i++) {
+						var sx = (self.planetData[i].x - self.visible_area.x) * (canvas.width / self.visible_area.width);
+						var sy = (self.planetData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
+
+						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
+							console.log('Popup planet info now: ' + self.planetData[i].name);
+						}
+					}
+				});
 							
 
 			}
