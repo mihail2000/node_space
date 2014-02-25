@@ -16,7 +16,7 @@ exports.newgame = function(data, callback, req) {
 	var user = req.session.user;
 
 	gameModel.setupNewGame(user, function(newgame) {
-		starmapModel.randomizeStarmap(newgame._id, 1000, function(starmap) {
+		starmapModel.randomizeStarmap(newgame._id, user._id, 1000, function(starmap) {
 			starmapModel.saveStarmap(starmap, function(){
 
 				var dataToMongo = null;

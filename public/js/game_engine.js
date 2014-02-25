@@ -34,6 +34,7 @@ var GAME_ENGINE = {
 				}
 				$.post( '/api/starmap/loadstarmap', { gameid: gameid }, function(res) {
 					self.starmapData = res.data;
+					self.centerOnOwn();
 					self.draw();
 				});
 
@@ -108,6 +109,14 @@ var GAME_ENGINE = {
 				});
 
 			},
+			centerOnOwn: function() {
+				for (var i = 0; i < self.starmapData.length; i++) {
+					if (typeof self.starmapData[i].ownerid !== 'undefined') {
+						self.visible_area.x = self.starmapData[i].x - (self.visible_area.width / 2);
+						self.visible_area.y = self.starmapData[i].y - (self.visible_area.height / 2);
+					}
+				}
+			},
 			animate: function() {
 				self.timer_id = setInterval(function() {
 					var stopTimer = true;
@@ -178,10 +187,21 @@ var GAME_ENGINE = {
 					ctx.strokeStyle = self.starmapData[i].color;
 					ctx.stroke();
 
+					// Draw circle over own starmaps
+
+					if (typeof self.starmapData[i].ownerid !== 'undefined' && self.starmapData[i].ownerid == GLOBAL_DATA.current_user) {
+						var radius = 5;
+
+						ctx.beginPath();
+						ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+						ctx.lineWidth = 2;
+						ctx.strokeStyle = "white";
+						ctx.stroke();
+
+					} 
 					ctx.fillStyle = "white";
 					ctx.font = "10px Verdana";
-					ctx.fillText(self.starmapData[i].name, x + 5, y + 3);
-					//ctx.fillRect(x,y,2,2);			
+					ctx.fillText(self.starmapData[i].name, x + 8, y + 3);
 				}
 
 			}
