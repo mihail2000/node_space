@@ -10,14 +10,19 @@ _starModel.collectionName = 'planets';
 _starModel.primaryId = '_id';
 
 _starModel.randomizeStarsystem = function(gameID, solarSystem, callback) {
-	var countOfPlanets = Math.floor(Math.random() * 10) + 1;
+	var countOfPlanets = Math.floor(Math.random() * 4) + 3;
 	var planetsInTheSystem = [];
+	var previousRad = 40;
 
 	for (var j = 0; j < countOfPlanets; j++) {
 		var planetName = solarSystem.name + ' ' + (j + 1);
+		var pos = Math.floor(Math.random() * 8);
+
 		planetsInTheSystem[j] = {
 			gameid: gameID,
 			starid: solarSystem._id,
+			radius: previousRad + Math.floor(Math.random() * (j * 20)) + 5,
+			position: pos,
 			name: planetName,
 			type: 'foo',
 			minerals: {
@@ -27,6 +32,7 @@ _starModel.randomizeStarsystem = function(gameID, solarSystem, callback) {
 				einsteinium: 3
 			}
 		};
+		previousRad = planetsInTheSystem[j].radius;
 	}
 
 	callback(planetsInTheSystem);
