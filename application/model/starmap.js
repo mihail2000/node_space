@@ -57,7 +57,7 @@ _starmapModel.starmap = { gameid : null,
 
 	Creates a randomized starmap and stores it into the internal _starmap structure
 */
-_starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
+_starmapModel.randomizeStarmap = function(gameID, userID, countOfStars, callback) {
 
 	// Read contents of the starmap names file
 	var fs = require('fs');
@@ -66,13 +66,13 @@ _starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
   		var planetNames = [];
   		var nameIteration = 0;
   		var starmap = [];
-  		// { gameid : gameID,
-		//				planets : [] };
-  		//_starmapModel.starmap.gameid = String(gameID);
+
+  		// Randomize the starting point
+  		var startingPoint = Math.floor(Math.random() * countOfStars);
 
 		for (var i = 0; i < countOfStars; i++) {
 			// If we have exchausted all planet names, re-use the old ones with II, III, IV etc.
-			if (planetNames.length == 0) {
+			if (planetNames.length == 0) {	
  				planetNames = data.match(/[^\s]+/g);
  				nameIteration++;
 			}
@@ -86,6 +86,11 @@ _starmapModel.randomizeStarmap = function(gameID, countOfStars, callback) {
 				name: planetNames[nameIdx] + __StarmapNameHelper(nameIteration),
 				color: __StarColorRandomizer()
 			}
+
+			if (startingPoint == i) {
+				star.ownerid = userID;
+			}
+
 			planetNames.splice(nameIdx, 1);
 			starmap.push(star);
 

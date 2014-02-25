@@ -6,7 +6,7 @@ module.exports = testCase({
         var starmapModel = require(__dirname + '/../model/starmap.js');
         test.ok(typeof starmapModel !== 'undefined');
 
-        starmapModel.randomizeStarmap(0, 1000, function(starmap) {
+        starmapModel.randomizeStarmap(0, 0, 1000, function(starmap) {
 			test.ok(starmap.length == 1000);
 	        test.done();
         });
@@ -26,7 +26,7 @@ module.exports = testCase({
                 test.ok(newgame !== null);
                 console.log('Game ID : ' + newgame._id);
                 gameId = newgame._id;
-                starmapModel.randomizeStarmap(newgame._id, 1000, function(starmap) {
+                starmapModel.randomizeStarmap(newgame._id, user[0]._id, 1000, function(starmap) {
                     starmapModel.saveStarmap(starmap, function(id) {
                         test.ok(id != null);
                         test.done();
@@ -49,7 +49,7 @@ module.exports = testCase({
             gameModel.setupNewGame(user[0], function(newgame) {
                 test.ok(newgame !== null);
                 var gameId = newgame._id;
-                starmapModel.randomizeStarmap(newgame._id, 1000, function(starmap) {
+                starmapModel.randomizeStarmap(newgame._id, user[0]._id, 1000, function(starmap) {
                     starmapModel.saveStarmap(starmap, function(id) {
                         test.ok(id != null);
                         starmapModel.loadStarmap(gameId, function() {
