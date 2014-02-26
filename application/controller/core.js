@@ -84,17 +84,21 @@ exports.route_get = function(req, res) {
 				}
 				if (allowed) {
 					controller[action_name](req, res);					
+				} else {
+					console.log('CORE::route_get Access denied');
 				}
 			} else if (typeof controller['custom_route'] !== 'undefined') {
-				//controller.render = render;
-				controller.custom_route(req, res);
+				allowed = restrict(req, res, controller.acl, 'custom_route');
+				if (allowed) {
+					controller.custom_route(req, res);					
+				} else {
+					console.log('CORE::route_get Access denied');
+				}
 			} else {
 				console.log('CORE::Unknown action ' + controller_name + ':' + action_name);
-				//res.end();
 			}
 		} else {
 			console.log('CORE::Unknown controller: ' + controller_name);
-			//res.end();
 		}
 	}
 }
@@ -133,7 +137,10 @@ exports.route_api = function(req, res) {
 				}, req);
 			} else {
 				console.log('Access denied');
-				res.end('Access denied');
+				//res.end('Access denied');
+				//res.send({ error: 'Access denied' });
+				res.send({ data: 'Access denied' });
+				//res.end();
 			}
 		} else {
 			res.end('Unknown request');

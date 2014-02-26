@@ -1,5 +1,9 @@
 // Star API
-var MongoClient = require('mongodb').MongoClient;
+
+exports.acl = {
+	'guest' : null,
+	'user' : ['loadstardata' ]
+}
 
 exports.loadstardata = function(data, callback) {
 	console.log('star:loadstardata');
