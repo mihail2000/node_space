@@ -15,6 +15,19 @@ var GAME_ENGINE = {
 		});
 		//GAME_ENGINE.modules.register.init();
 	},
+	helpers: {
+		isItemOnXY: function(click_x, click_y, object_x, object_y, visible_area, canvas) {
+			var sx = (object_x - visible_area.x) * (canvas.width / visible_area.width);
+			var sy = (object_y - visible_area.y) * (canvas.height / visible_area.height);
+			var isClick = false;
+			if (Math.abs(sx - click_x) < 5 && Math.abs(sy - click_y) < 5) {
+				isClick = true;
+			}
+
+			return isClick;
+
+		}
+	},
 	modules: {
 		starmap: {
 			self: null,
@@ -42,14 +55,31 @@ var GAME_ENGINE = {
 				$('#mainarea').click(function(e) {
 					var x = Math.floor((e.pageX-$("#mainarea").offset().left));
 					var y = Math.floor((e.pageY-$("#mainarea").offset().top));
+					var canvas = document.getElementById('mainarea');
+					var ctx = canvas.getContext('2d');
+
+					for (var i = 0; i < self.starmapData.length; i++) {
+						if (GAME_ENGINE.helpers.isItemOnXY(x, y, self.starmapData[i].x, self.starmapData[i].y, self.visible_area, canvas)) {
+							if (typeof self.starmapData[i].selected === 'undefined' || !self.starmapData[i].selected) {
+								self.starmapData[i].selected = true;
+							} else {
+								self.starmapData[i].selected = false;								
+							}
+							self.draw();							
+							break;
+						}
+					}
+				});
+
+				$('#mainarea').dblclick(function(e) {
+					var x = Math.floor((e.pageX-$("#mainarea").offset().left));
+					var y = Math.floor((e.pageY-$("#mainarea").offset().top));
 					var canvas=document.getElementById('mainarea');
 
 					for (var i = 0; i < self.starmapData.length; i++) {
-						var sx = (self.starmapData[i].x - self.visible_area.x) * (canvas.width / self.visible_area.width);
-						var sy = (self.starmapData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
-
-						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
+						if (GAME_ENGINE.helpers.isItemOnXY(x, y, self.starmapData[i].x, self.starmapData[i].y, self.visible_area, canvas)) {
 							window.location.href="/planet/" + gameid + '/' + self.starmapData[i]._id;
+							break;
 						}
 					}
 				});
@@ -199,7 +229,17 @@ var GAME_ENGINE = {
 						ctx.strokeStyle = "white";
 						ctx.stroke();
 
-					} 
+					}
+
+					if (typeof self.starmapData[i].selected !== 'undefined' && self.starmapData[i].selected == true) {						
+						var radius = 5;
+						ctx.beginPath();
+						ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+						ctx.lineWidth = 2;
+						ctx.strokeStyle = "green";
+						ctx.stroke();
+					}
+
 					ctx.fillStyle = "white";
 					ctx.font = "10px Verdana";
 					ctx.fillText(self.starmapData[i].name, x + 8, y + 3);
@@ -361,10 +401,7 @@ var GAME_ENGINE = {
 					var canvas=document.getElementById('mainarea');
 
 					for (var i = 0; i < self.planetData.length; i++) {
-						var sx = (self.planetData[i].x - self.visible_area.x) * (canvas.width / self.visible_area.width);
-						var sy = (self.planetData[i].y - self.visible_area.y) * (canvas.height / self.visible_area.height);
-
-						if (Math.abs(sx - x) < 5 && Math.abs(sy-y) < 5) {
+						if (GAME_ENGINE.helpers.isItemOnXY(x, y, self.planetData[i].x, self.planetData[i].y, self.visible_area, canvas)) {
 							console.log('Popup planet info now: ' + self.planetData[i].name);
 						}
 					}

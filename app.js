@@ -10,7 +10,7 @@ var QC = {
 		server_version: "0.0.1",
 		server_name: "Dev Server",
 		port: 3000,
-		valid_routes: "/signin|/signup|/game|/logout|/starsystem|/lobby|/planet/:gameid/:starid"
+		valid_routes: "/signin|/signup|/game|/logout|/starsystem|/lobby|/planet/:gameid/:starid|/game/:gameid"
 	},
 	init: function () {
 		var express = require('express');

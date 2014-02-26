@@ -2,7 +2,7 @@
 
 exports.acl = {
 	'guest' : null,
-	'user' : ['action_index']
+	'user' : ['custom_route']
 }
 
 exports.custom_route = function(req, res) {

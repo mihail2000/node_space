@@ -4,6 +4,7 @@ BUGs:
 
 TODO:
 
+- Implement real API. Should take both access ID as well as username & password combo
 - TOP-PRIO: Refactor how starmaps are stored into the database. Using objects of this scale is not wise.
 	Couple different ideas:
 		1. Use multiple databases: one database per game. Database name could be 'game_1234'
