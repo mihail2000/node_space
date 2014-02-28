@@ -100,6 +100,7 @@ var QC = {
 	setTemplateVariables: function(req) {
 		if (req.session.user != null) {
 			QC.app.locals.current_user = req.session.user;
+			QC.app.locals.user_data_credits = 1000;
 		} else {
 			delete QC.app.locals.current_user;
 		}

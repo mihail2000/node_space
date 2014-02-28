@@ -369,11 +369,20 @@ var GAME_ENGINE = {
 									self.planetData[i].x = x;
 									self.planetData[i].y = y;
 
+
 									ctx.beginPath();
 									ctx.arc(500, 300, radius, 0, 2 * Math.PI, false);
 									ctx.lineWidth = 0;
 									ctx.strokeStyle = "rgb(50,50,50)";
 									ctx.stroke();
+
+									/*
+									base_image = new Image();
+									base_image.src = '/public/img/blue.png';
+									base_image.onload = function() {
+										ctx.drawImage(base_image, x, y);
+									}.bind(x, y);
+									*/
 
 									radius = 4;
 
