@@ -50,7 +50,7 @@ var QC = {
 		swig.setDefaults({ cache: false });
 
 		QC.app.get('/', function(req, res) {
-			if (req.session.user !== null) {
+			if (typeof req.session.user !== 'undefined') {
 				res.redirect('/lobby');
 			} else {
 				QC.setTemplateVariables(req);
